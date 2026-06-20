@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.pusillanimousfool.oreoh.OreOh"
+          "com.yeetdot.oreoh.OreOh"
 		],
 		"client": [
-			"com.pusillanimousfool.oreoh.client.OreOhClient"
+          "com.yeetdot.oreoh.client.OreOhClient"
 		],
 		"fabric-datagen": [
-			"com.pusillanimousfool.oreoh.client.OreOhDataGenerator"
+          "com.yeetdot.oreoh.client.OreOhDataGenerator"
 		]
 	},
 	"mixins": [

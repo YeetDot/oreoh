@@ -1,4 +1,4 @@
-package com.pusillanimousfool.oreoh;
+package com.yeetdot.oreoh;
 
 import net.fabricmc.api.ModInitializer;
 

@@ -1,4 +1,4 @@
-package com.pusillanimousfool.oreoh.client;
+package com.yeetdot.oreoh.client;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;

@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "com.pusillanimousfool.oreoh.client.mixin",
+	"package": "com.yeetdot.oreoh.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [],
 	"injectors": {
