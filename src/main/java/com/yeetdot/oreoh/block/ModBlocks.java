@@ -9,6 +9,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -16,9 +17,17 @@ public class ModBlocks {
     public static final Block ABLOCK = registerBlock("ablock", Block::new);
 
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function) {
-        Block block = function.apply(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, OreOh.id(name))));
+        // 1. Create the registry resource key ahead of time
+        ResourceKey<@NotNull Block> blockKey = ResourceKey.create(Registries.BLOCK, OreOh.id(name));
+
+        // 2. Generate clean baseline properties and apply the id
+        BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().setId(blockKey);
+
+        // 3. Apply your existing lambda function signature
+        Block block = function.apply(properties);
+
         registerBlockItem(name, block);
-        return Registry.register(BuiltInRegistries.BLOCK, OreOh.id(name), block);
+        return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
     }
 
     private static void registerBlockItem(String name, Block block) {

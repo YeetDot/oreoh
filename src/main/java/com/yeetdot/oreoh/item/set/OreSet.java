@@ -1,5 +1,6 @@
 package com.yeetdot.oreoh.item.set;
 
+import com.yeetdot.oreoh.block.ModBlocks;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -14,8 +15,8 @@ public class OreSet extends Set {
     public static final List<OreSet> ORE_SETS = new ArrayList<>();
 
     public OreSet(String name, String hardness) {
-        ORE = block(name, BlockBehaviour.Properties.of());
-        DEEPSLATE_ORE = block(name, BlockBehaviour.Properties.of());
+        ORE = ModBlocks.registerBlock(String.format("%s_ore", name), Block::new);
+        DEEPSLATE_ORE = ModBlocks.registerBlock(String.format("deepslate_%s_ore", name), Block::new);
         this.hardness = hardness;
 
         ORE_SETS.add(this);

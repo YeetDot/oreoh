@@ -1,5 +1,6 @@
 package com.yeetdot.oreoh.item.set;
 
+import com.yeetdot.oreoh.block.ModBlocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -21,8 +22,8 @@ public class MetalSet extends Set {
     public MetalSet(String name, String hardness) {
         INGOT = item(String.format("%s_ingot", name));
         NUGGET = item(String.format("%s_nugget", name));
-        BLOCK = block(String.format("%s_block", name), BlockBehaviour.Properties.of().strength(3.0f, 3.0f).sound(SoundType.METAL));
-        RAW_BLOCK = block(String.format("raw_%s_block", name), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(3.0f, 3.0f));
+        BLOCK = ModBlocks.registerBlock(String.format("%s_block", name), properties -> new Block(properties.strength(3.0f, 3.0f).sound(SoundType.METAL)));
+        RAW_BLOCK = ModBlocks.registerBlock(String.format("raw_%s_block", name), properties -> new Block(properties.strength(3.0f, 3.0f)));
         ORES = new OreSet(name, hardness);
 
         METAL_SETS.add(this);

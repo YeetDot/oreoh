@@ -21,6 +21,7 @@ public class OreOh implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
         ModItems.registerItems();
         ModBlocks.registerBlocks();
+        ModMetals.registerMetals();
 	}
 
 	public static Identifier id(String path) {
