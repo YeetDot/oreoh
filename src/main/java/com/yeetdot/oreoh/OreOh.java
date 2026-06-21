@@ -1,9 +1,12 @@
 package com.yeetdot.oreoh;
 
+import com.yeetdot.oreoh.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.resources.Identifier;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +17,7 @@ public class OreOh implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
+        ModItems.registerItems();
 	}
 
 	public static Identifier id(String path) {

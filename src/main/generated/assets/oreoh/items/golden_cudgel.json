@@ -1,0 +1,8 @@
+{
+  "hand_animation_on_swap": false,
+  "model": {
+    "type": "minecraft:model",
+    "model": "oreoh:item/golden_cudgel"
+  },
+  "oversized_in_gui": true
+}

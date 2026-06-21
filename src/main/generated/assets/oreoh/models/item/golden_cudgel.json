@@ -1,0 +1,6 @@
+{
+  "parent": "oreoh:item/oversized_flat_item",
+  "textures": {
+    "layer0": "oreoh:item/golden_cudgel"
+  }
+}
