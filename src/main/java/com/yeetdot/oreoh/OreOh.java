@@ -1,6 +1,8 @@
 package com.yeetdot.oreoh;
 
+import com.yeetdot.oreoh.block.ModBlocks;
 import com.yeetdot.oreoh.item.ModItems;
+import com.yeetdot.oreoh.item.ModMetals;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
@@ -18,6 +20,7 @@ public class OreOh implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
         ModItems.registerItems();
+        ModBlocks.registerBlocks();
 	}
 
 	public static Identifier id(String path) {
