@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:osmium_ore",
-    "oreoh:deepslate_osmium_ore"
+    "oreoh:deepslate_osmium_ore",
+    "oreoh:nether_osmium_ore",
+    "oreoh:end_osmium_ore"
   ]
 }

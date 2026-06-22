@@ -1,24 +1,24 @@
 {
   "values": [
     "#c:storage_blocks/aluminum",
-    "#c:storage_blocks/raw_aluminum",
     "#c:storage_blocks/nickel",
-    "#c:storage_blocks/raw_nickel",
     "#c:storage_blocks/zinc",
-    "#c:storage_blocks/raw_zinc",
     "#c:storage_blocks/silver",
-    "#c:storage_blocks/raw_silver",
     "#c:storage_blocks/tin",
-    "#c:storage_blocks/raw_tin",
     "#c:storage_blocks/osmium",
-    "#c:storage_blocks/raw_osmium",
     "#c:storage_blocks/iridium",
-    "#c:storage_blocks/raw_iridium",
     "#c:storage_blocks/platinum",
-    "#c:storage_blocks/raw_platinum",
     "#c:storage_blocks/lead",
-    "#c:storage_blocks/raw_lead",
     "#c:storage_blocks/uranium",
+    "#c:storage_blocks/raw_aluminum",
+    "#c:storage_blocks/raw_nickel",
+    "#c:storage_blocks/raw_zinc",
+    "#c:storage_blocks/raw_silver",
+    "#c:storage_blocks/raw_tin",
+    "#c:storage_blocks/raw_osmium",
+    "#c:storage_blocks/raw_iridium",
+    "#c:storage_blocks/raw_platinum",
+    "#c:storage_blocks/raw_lead",
     "#c:storage_blocks/raw_uranium"
   ]
 }

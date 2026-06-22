@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:tin_ore",
-    "oreoh:deepslate_tin_ore"
+    "oreoh:deepslate_tin_ore",
+    "oreoh:nether_tin_ore",
+    "oreoh:end_tin_ore"
   ]
 }

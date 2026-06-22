@@ -20,6 +20,15 @@ public class ModBlocks {
         return registerBlock(name, function, BlockBehaviour.Properties.of());
     }
 
+    public static Block registerBlock(ResourceKey<Block> blockKey, Function<BlockBehaviour.Properties, Block> function, BlockBehaviour.Properties properties) {
+        Block block = function.apply(properties.setId(blockKey));
+
+        String name = blockKey.identifier().getPath();
+        registerBlockItem(name, block);
+
+        return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
+    }
+
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function, BlockBehaviour.Properties properties) {
         ResourceKey<@NotNull Block> blockKey = ResourceKey.create(Registries.BLOCK, OreOh.id(name));
         Block block = function.apply(properties.setId(blockKey));

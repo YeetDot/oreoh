@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:nickel_ore",
-    "oreoh:deepslate_nickel_ore"
+    "oreoh:deepslate_nickel_ore",
+    "oreoh:nether_nickel_ore",
+    "oreoh:end_nickel_ore"
   ]
 }

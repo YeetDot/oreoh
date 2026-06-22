@@ -16,17 +16,17 @@ public class ItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        SetApplier.applyToMaterials(materialSet -> copy(materialSet.tagSet.storageBlock(), materialSet.tagSet.storageBlockItem()));
+        SetApplier.applyToNaturals(naturalSet -> copy(naturalSet.tagSet.oreParent(), naturalSet.tagSet.oreParentItem()));
         SetApplier.applyToMetals(metalSet -> {
-            copy(metalSet.TAGS.blockTagBlock(), metalSet.TAGS.itemTagBlock());
-            copy(metalSet.TAGS.blockTagRawBlock(), metalSet.TAGS.itemTagRawBlock());
-            copy(metalSet.ORES.TAGS.blockTagOre(), metalSet.ORES.TAGS.itemTagOre());
+            copy(metalSet.tagSet.rawBlock(), metalSet.tagSet.rawBlockItem());
 
-            this.tag(metalSet.TAGS.itemTagIngot())
-                    .add(metalSet.IDS.ingot());
-            this.tag(metalSet.TAGS.itemTagNugget())
-                    .add(metalSet.IDS.nugget());
-            this.tag(metalSet.TAGS.itemTagRaw())
-                    .add(metalSet.IDS.raw());
+            this.tag(metalSet.tagSet.primary("ingots"))
+                    .add(metalSet.idSet.primary());
+            this.tag(metalSet.tagSet.nugget())
+                    .add(metalSet.idSet.nugget());
+            this.tag(metalSet.tagSet.rawItem())
+                    .add(metalSet.idSet.rawItem());
         });
     }
 }

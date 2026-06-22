@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:uranium_ore",
-    "oreoh:deepslate_uranium_ore"
+    "oreoh:deepslate_uranium_ore",
+    "oreoh:nether_uranium_ore",
+    "oreoh:end_uranium_ore"
   ]
 }

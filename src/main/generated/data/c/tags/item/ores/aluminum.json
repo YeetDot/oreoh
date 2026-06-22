@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:aluminum_ore",
-    "oreoh:deepslate_aluminum_ore"
+    "oreoh:deepslate_aluminum_ore",
+    "oreoh:nether_aluminum_ore",
+    "oreoh:end_aluminum_ore"
   ]
 }

@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:silver_ore",
-    "oreoh:deepslate_silver_ore"
+    "oreoh:deepslate_silver_ore",
+    "oreoh:nether_silver_ore",
+    "oreoh:end_silver_ore"
   ]
 }

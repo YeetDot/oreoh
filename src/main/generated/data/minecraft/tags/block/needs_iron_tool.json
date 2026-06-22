@@ -1,16 +1,22 @@
 {
   "values": [
     "oreoh:nickel_block",
-    "oreoh:raw_nickel_block",
+    "oreoh:osmium_block",
+    "oreoh:platinum_block",
     "oreoh:nickel_ore",
     "oreoh:deepslate_nickel_ore",
-    "oreoh:osmium_block",
-    "oreoh:raw_osmium_block",
+    "oreoh:nether_nickel_ore",
+    "oreoh:end_nickel_ore",
     "oreoh:osmium_ore",
     "oreoh:deepslate_osmium_ore",
-    "oreoh:platinum_block",
-    "oreoh:raw_platinum_block",
+    "oreoh:nether_osmium_ore",
+    "oreoh:end_osmium_ore",
     "oreoh:platinum_ore",
-    "oreoh:deepslate_platinum_ore"
+    "oreoh:deepslate_platinum_ore",
+    "oreoh:nether_platinum_ore",
+    "oreoh:end_platinum_ore",
+    "oreoh:raw_nickel_block",
+    "oreoh:raw_osmium_block",
+    "oreoh:raw_platinum_block"
   ]
 }

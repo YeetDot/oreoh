@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:lead_ore",
-    "oreoh:deepslate_lead_ore"
+    "oreoh:deepslate_lead_ore",
+    "oreoh:nether_lead_ore",
+    "oreoh:end_lead_ore"
   ]
 }

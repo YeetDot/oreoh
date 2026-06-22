@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:zinc_ore",
-    "oreoh:deepslate_zinc_ore"
+    "oreoh:deepslate_zinc_ore",
+    "oreoh:nether_zinc_ore",
+    "oreoh:end_zinc_ore"
   ]
 }

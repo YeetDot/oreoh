@@ -1,6 +1,8 @@
 {
   "values": [
     "oreoh:iridium_ore",
-    "oreoh:deepslate_iridium_ore"
+    "oreoh:deepslate_iridium_ore",
+    "oreoh:nether_iridium_ore",
+    "oreoh:end_iridium_ore"
   ]
 }

@@ -22,12 +22,14 @@ public class ModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
         SetApplier.applyToMetals(metalSet -> {
-            blockModelGenerators.createTrivialCube(metalSet.BLOCK);
-            blockModelGenerators.createTrivialCube(metalSet.RAW_BLOCK);
+            blockModelGenerators.createTrivialCube(metalSet.storageBlock);
+            blockModelGenerators.createTrivialCube(metalSet.rawBlock);
         });
-        SetApplier.applyToOres(oreSet -> {
-            blockModelGenerators.createTrivialCube(oreSet.ORE);
-            blockModelGenerators.createTrivialCube(oreSet.DEEPSLATE_ORE);
+        SetApplier.applyToNaturals(naturalSet -> {
+            blockModelGenerators.createTrivialCube(naturalSet.oreStone);
+            blockModelGenerators.createTrivialCube(naturalSet.oreDeepslate);
+            blockModelGenerators.createTrivialCube(naturalSet.oreNether);
+            blockModelGenerators.createTrivialCube(naturalSet.oreEnd);
         });
     }
 
@@ -35,9 +37,9 @@ public class ModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
         Identifier largeItemId = OreOh.id("item/oversized_flat_item");
         SetApplier.applyToMetals(metalSet -> {
-            itemModelGenerators.generateFlatItem(metalSet.INGOT, ModelTemplates.FLAT_ITEM);
-            itemModelGenerators.generateFlatItem(metalSet.NUGGET, ModelTemplates.FLAT_ITEM);
-            itemModelGenerators.generateFlatItem(metalSet.RAW, ModelTemplates.FLAT_ITEM);
+            itemModelGenerators.generateFlatItem(metalSet.primary, ModelTemplates.FLAT_ITEM);
+            itemModelGenerators.generateFlatItem(metalSet.nugget, ModelTemplates.FLAT_ITEM);
+            itemModelGenerators.generateFlatItem(metalSet.raw, ModelTemplates.FLAT_ITEM);
         });
 
         ModelTemplate OversizedFlatItemModel = new ModelTemplate(Optional.of(largeItemId), Optional.empty(), TextureSlot.LAYER0);

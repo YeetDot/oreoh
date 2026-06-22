@@ -24,9 +24,10 @@ public class BlockLootTableProvider extends FabricBlockLootSubProvider {
 
     @Override
     public void generate() {
+        SetApplier.applyToMaterials(materialSet -> dropSelf(materialSet.storageBlock));
         SetApplier.applyToMetals(metalSet -> {
-            dropSelf(metalSet.BLOCK);
-            dropSelf(metalSet.RAW_BLOCK);
+            dropSelf(metalSet.storageBlock);
+            dropSelf(metalSet.rawBlock);
 
             // Determine drop counts based on the metal name
             int minDrops = 1;
@@ -53,11 +54,15 @@ public class BlockLootTableProvider extends FabricBlockLootSubProvider {
             }
 
             if (isMultiDrop) {
-                add(metalSet.ORES.ORE, createMultipleOreDrops(metalSet.ORES.ORE, metalSet.RAW, minDrops, maxDrops));
-                add(metalSet.ORES.DEEPSLATE_ORE, createMultipleOreDrops(metalSet.ORES.DEEPSLATE_ORE, metalSet.RAW, minDrops, maxDrops));
+                add(metalSet.oreStone, createMultipleOreDrops(metalSet.oreStone, metalSet.raw, minDrops, maxDrops));
+                add(metalSet.oreDeepslate, createMultipleOreDrops(metalSet.oreDeepslate, metalSet.raw, minDrops, maxDrops));
+                add(metalSet.oreNether, createMultipleOreDrops(metalSet.oreNether, metalSet.raw, minDrops, maxDrops));
+                add(metalSet.oreEnd, createMultipleOreDrops(metalSet.oreEnd, metalSet.raw, minDrops, maxDrops));
             } else {
-                add(metalSet.ORES.ORE, createOreDrop(metalSet.ORES.ORE, metalSet.RAW));
-                add(metalSet.ORES.DEEPSLATE_ORE, createOreDrop(metalSet.ORES.DEEPSLATE_ORE, metalSet.RAW));
+                add(metalSet.oreStone, createOreDrop(metalSet.oreStone, metalSet.raw));
+                add(metalSet.oreDeepslate, createOreDrop(metalSet.oreDeepslate, metalSet.raw));
+                add(metalSet.oreNether, createOreDrop(metalSet.oreNether, metalSet.raw));
+                add(metalSet.oreEnd, createOreDrop(metalSet.oreEnd, metalSet.raw));
             }
         });
     }

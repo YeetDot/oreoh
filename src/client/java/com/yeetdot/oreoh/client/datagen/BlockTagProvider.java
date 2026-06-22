@@ -25,48 +25,90 @@ public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        SetApplier.applyToMetals(metalSet -> {
-            tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .add(metalSet.IDS.storageBlock())
-                    .add(metalSet.IDS.rawBlock())
-                    .add(metalSet.ORES.IDS.ore())
-                    .add(metalSet.ORES.IDS.deepslateOre());
-            switch (metalSet.hardness) {
+        SetApplier.applyToMaterials(materialSet -> {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(materialSet.idSet.storageBlock());
+            tag(materialSet.tagSet.storageBlock())
+                    .add(materialSet.idSet.storageBlock());
+            switch (materialSet.hardness()) {
                 case "stone":
                     tag(BlockTags.NEEDS_STONE_TOOL)
-                            .add(metalSet.IDS.storageBlock())
-                            .add(metalSet.IDS.rawBlock())
-                            .add(metalSet.ORES.IDS.ore())
-                            .add(metalSet.ORES.IDS.deepslateOre());
+                            .add(materialSet.idSet.storageBlock());
                     break;
                 case "iron":
                     tag(BlockTags.NEEDS_IRON_TOOL)
-                            .add(metalSet.IDS.storageBlock())
-                            .add(metalSet.IDS.rawBlock())
-                            .add(metalSet.ORES.IDS.ore())
-                            .add(metalSet.ORES.IDS.deepslateOre());
+                            .add(materialSet.idSet.storageBlock());
                     break;
                 case "diamond":
                     tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                            .add(metalSet.IDS.storageBlock())
-                            .add(metalSet.IDS.rawBlock())
-                            .add(metalSet.ORES.IDS.ore())
-                            .add(metalSet.ORES.IDS.deepslateOre());
+                            .add(materialSet.idSet.storageBlock());
                     break;
-                case null, default: break;
+                default:
+                    break;
             }
-            tag(metalSet.TAGS.blockTagBlock())
-                    .add(metalSet.IDS.storageBlock());
-            tag(metalSet.TAGS.blockTagRawBlock())
-                    .add(metalSet.IDS.rawBlock());
-            tag(metalSet.ORES.TAGS.blockTagOre())
-                    .add(metalSet.ORES.IDS.ore())
-                    .add(metalSet.ORES.IDS.deepslateOre());
             tag(C_STORAGE_BLOCKS)
-                    .addTag(metalSet.TAGS.blockTagBlock())
-                    .addTag(metalSet.TAGS.blockTagRawBlock());
+                    .addTag(materialSet.tagSet.storageBlock());
+        });
+        SetApplier.applyToNaturals(naturalSet -> {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .add(naturalSet.idSet.oreStone())
+                    .add(naturalSet.idSet.oreDeepslate())
+                    .add(naturalSet.idSet.oreNether())
+                    .add(naturalSet.idSet.oreEnd());
+            tag(naturalSet.tagSet.oreParent())
+                    .add(naturalSet.idSet.oreStone())
+                    .add(naturalSet.idSet.oreDeepslate())
+                    .add(naturalSet.idSet.oreNether())
+                    .add(naturalSet.idSet.oreEnd());
+            switch (naturalSet.hardness()) {
+                case "stone":
+                    tag(BlockTags.NEEDS_STONE_TOOL)
+                            .add(naturalSet.idSet.oreStone())
+                            .add(naturalSet.idSet.oreDeepslate())
+                            .add(naturalSet.idSet.oreNether())
+                            .add(naturalSet.idSet.oreEnd());
+                    break;
+                case "iron":
+                    tag(BlockTags.NEEDS_IRON_TOOL)
+                            .add(naturalSet.idSet.oreStone())
+                            .add(naturalSet.idSet.oreDeepslate())
+                            .add(naturalSet.idSet.oreNether())
+                            .add(naturalSet.idSet.oreEnd());
+                    break;
+                case "diamond":
+                    tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                            .add(naturalSet.idSet.oreStone())
+                            .add(naturalSet.idSet.oreDeepslate())
+                            .add(naturalSet.idSet.oreNether())
+                            .add(naturalSet.idSet.oreEnd());
+                    break;
+                default:
+                    break;
+            }
             tag(C_ORES)
-                    .addTag(metalSet.ORES.TAGS.blockTagOre());
+                    .addTag(naturalSet.tagSet.oreParent());
+        });
+        SetApplier.applyToMetals(metalSet -> {
+            tag(metalSet.tagSet.rawBlock())
+                    .add(metalSet.idSet.rawBlock());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(metalSet.idSet.rawBlock());
+            switch (metalSet.hardness()) {
+                case "stone":
+                    tag(BlockTags.NEEDS_STONE_TOOL)
+                            .add(metalSet.idSet.rawBlock());
+                    break;
+                case "iron":
+                    tag(BlockTags.NEEDS_IRON_TOOL)
+                            .add(metalSet.idSet.rawBlock());
+                    break;
+                case "diamond":
+                    tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                            .add(metalSet.idSet.rawBlock());
+                    break;
+                default:
+                    break;
+            }
+            tag(C_STORAGE_BLOCKS)
+                    .addTag(metalSet.tagSet.rawBlock());
         });
     }
 }
