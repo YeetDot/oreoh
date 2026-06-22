@@ -1,14 +1,13 @@
 package com.yeetdot.oreoh;
 
 import com.yeetdot.oreoh.block.ModBlocks;
+import com.yeetdot.oreoh.creativetab.ModCreativeModeTabs;
 import com.yeetdot.oreoh.item.ModItems;
-import com.yeetdot.oreoh.item.ModMetals;
+import com.yeetdot.oreoh.set.ModMetals;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.resources.Identifier;
 
-import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +18,7 @@ public class OreOh implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
+        ModCreativeModeTabs.registerCreativeModeTabs();
         ModItems.registerItems();
         ModBlocks.registerBlocks();
         ModMetals.registerMetals();

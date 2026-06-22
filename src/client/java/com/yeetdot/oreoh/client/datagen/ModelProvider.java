@@ -2,7 +2,7 @@ package com.yeetdot.oreoh.client.datagen;
 
 import com.yeetdot.oreoh.OreOh;
 import com.yeetdot.oreoh.item.ModItems;
-import com.yeetdot.oreoh.item.set.SetApplier;
+import com.yeetdot.oreoh.set.SetApplier;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;

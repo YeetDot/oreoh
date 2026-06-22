@@ -1,0 +1,24 @@
+{
+  "values": [
+    "oreoh:aluminum_block",
+    "oreoh:raw_aluminum_block",
+    "oreoh:aluminum_ore",
+    "oreoh:deepslate_aluminum_ore",
+    "oreoh:zinc_block",
+    "oreoh:raw_zinc_block",
+    "oreoh:zinc_ore",
+    "oreoh:deepslate_zinc_ore",
+    "oreoh:silver_block",
+    "oreoh:raw_silver_block",
+    "oreoh:silver_ore",
+    "oreoh:deepslate_silver_ore",
+    "oreoh:tin_block",
+    "oreoh:raw_tin_block",
+    "oreoh:tin_ore",
+    "oreoh:deepslate_tin_ore",
+    "oreoh:lead_block",
+    "oreoh:raw_lead_block",
+    "oreoh:lead_ore",
+    "oreoh:deepslate_lead_ore"
+  ]
+}

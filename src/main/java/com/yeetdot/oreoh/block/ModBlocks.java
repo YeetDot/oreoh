@@ -14,24 +14,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 
 public class ModBlocks {
-    public static final Block ABLOCK = registerBlock("ablock", Block::new);
+    public static final Block ABLOCK = registerBlock("ablock", Block::new, BlockBehaviour.Properties.of());
 
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function) {
-        // 1. Create the registry resource key ahead of time
+        return registerBlock(name, function, BlockBehaviour.Properties.of());
+    }
+
+    public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function, BlockBehaviour.Properties properties) {
         ResourceKey<@NotNull Block> blockKey = ResourceKey.create(Registries.BLOCK, OreOh.id(name));
-
-        // 2. Generate clean baseline properties and apply the id
-        BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().setId(blockKey);
-
-        // 3. Apply your existing lambda function signature
-        Block block = function.apply(properties);
+        Block block = function.apply(properties.setId(blockKey));
 
         registerBlockItem(name, block);
         return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
     }
 
     private static void registerBlockItem(String name, Block block) {
-        Registry.register(BuiltInRegistries.ITEM, OreOh.id(name), new BlockItem(block, new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, OreOh.id(name)))));
+        Registry.register(BuiltInRegistries.ITEM, OreOh.id(name),
+                new BlockItem(block, new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, OreOh.id(name)))));
     }
 
     public static void registerBlocks() {

@@ -1,0 +1,16 @@
+{
+  "values": [
+    "oreoh:osmium_block",
+    "oreoh:raw_osmium_block",
+    "oreoh:osmium_ore",
+    "oreoh:deepslate_osmium_ore",
+    "oreoh:iridium_block",
+    "oreoh:raw_iridium_block",
+    "oreoh:iridium_ore",
+    "oreoh:deepslate_iridium_ore",
+    "oreoh:platinum_block",
+    "oreoh:raw_platinum_block",
+    "oreoh:platinum_ore",
+    "oreoh:deepslate_platinum_ore"
+  ]
+}
