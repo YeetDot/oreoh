@@ -4,9 +4,13 @@
     "oreoh:raw_nickel_block",
     "oreoh:nickel_ore",
     "oreoh:deepslate_nickel_ore",
-    "oreoh:uranium_block",
-    "oreoh:raw_uranium_block",
-    "oreoh:uranium_ore",
-    "oreoh:deepslate_uranium_ore"
+    "oreoh:osmium_block",
+    "oreoh:raw_osmium_block",
+    "oreoh:osmium_ore",
+    "oreoh:deepslate_osmium_ore",
+    "oreoh:platinum_block",
+    "oreoh:raw_platinum_block",
+    "oreoh:platinum_ore",
+    "oreoh:deepslate_platinum_ore"
   ]
 }

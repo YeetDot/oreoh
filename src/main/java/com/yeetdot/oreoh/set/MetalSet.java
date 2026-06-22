@@ -22,7 +22,7 @@ public class MetalSet {
     public final OreSet ORES;
     public final MetalTagSet TAGS;
     public final MetalIdSet IDS;
-    public final String name;
+    private final String name;
     public final String hardness;
 
     public static final List<MetalSet> METAL_SETS = new ArrayList<>();

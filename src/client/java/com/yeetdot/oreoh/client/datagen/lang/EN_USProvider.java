@@ -26,6 +26,7 @@ public class EN_USProvider extends FabricLanguageProvider {
             translationBuilder.add(metalSet.BLOCK, String.format("Block of %s", name));
             translationBuilder.add(metalSet.INGOT, String.format("%s Ingot", name));
             translationBuilder.add(metalSet.NUGGET, String.format("%s Nugget", name));
+            translationBuilder.add(metalSet.RAW, String.format("Raw %s", name));
             translationBuilder.add(metalSet.RAW_BLOCK, String.format("Block of Raw %s", name));
             translationBuilder.add(metalSet.ORES.ORE, String.format("%s Ore", name));
             translationBuilder.add(metalSet.ORES.DEEPSLATE_ORE, String.format("Deepslate %s Ore", name));

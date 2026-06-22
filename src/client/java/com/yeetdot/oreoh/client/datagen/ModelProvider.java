@@ -14,11 +14,9 @@ import net.minecraft.resources.Identifier;
 import java.util.Optional;
 
 public class ModelProvider extends FabricModelProvider {
-    private final FabricPackOutput dataOutput;
 
     public ModelProvider(FabricPackOutput output) {
         super(output);
-        this.dataOutput = output;
     }
 
     @Override
@@ -39,6 +37,7 @@ public class ModelProvider extends FabricModelProvider {
         SetApplier.applyToMetals(metalSet -> {
             itemModelGenerators.generateFlatItem(metalSet.INGOT, ModelTemplates.FLAT_ITEM);
             itemModelGenerators.generateFlatItem(metalSet.NUGGET, ModelTemplates.FLAT_ITEM);
+            itemModelGenerators.generateFlatItem(metalSet.RAW, ModelTemplates.FLAT_ITEM);
         });
 
         ModelTemplate OversizedFlatItemModel = new ModelTemplate(Optional.of(largeItemId), Optional.empty(), TextureSlot.LAYER0);
