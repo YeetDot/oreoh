@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "brass",
+  "ingredients": [
+    "oreoh:brass_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:brass_ingot"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "zinc",
+  "key": {
+    "#": "oreoh:zinc_nugget"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "oreoh:zinc_ingot"
+  }
+}

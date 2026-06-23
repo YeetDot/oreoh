@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "experience": 0.7,
+  "group": "silver",
+  "ingredient": "oreoh:deepslate_silver_ore",
+  "result": {
+    "id": "oreoh:silver_ingot"
+  }
+}

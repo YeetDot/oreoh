@@ -21,25 +21,32 @@ public class ModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
-        SetApplier.applyToMetals(metalSet -> {
-            blockModelGenerators.createTrivialCube(metalSet.storageBlock);
-            blockModelGenerators.createTrivialCube(metalSet.rawBlock);
+        SetApplier.applyToMaterials(set -> {
+            blockModelGenerators.createTrivialCube(set.storageBlock);
         });
-        SetApplier.applyToNaturals(naturalSet -> {
-            blockModelGenerators.createTrivialCube(naturalSet.oreStone);
-            blockModelGenerators.createTrivialCube(naturalSet.oreDeepslate);
-            blockModelGenerators.createTrivialCube(naturalSet.oreNether);
-            blockModelGenerators.createTrivialCube(naturalSet.oreEnd);
+        SetApplier.applyToMetals(set -> {
+            blockModelGenerators.createTrivialCube(set.rawBlock);
+        });
+        SetApplier.applyToNaturals(set -> {
+            blockModelGenerators.createTrivialCube(set.oreStone);
+            blockModelGenerators.createTrivialCube(set.oreDeepslate);
+            blockModelGenerators.createTrivialCube(set.oreNether);
+            blockModelGenerators.createTrivialCube(set.oreEnd);
         });
     }
 
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
         Identifier largeItemId = OreOh.id("item/oversized_flat_item");
-        SetApplier.applyToMetals(metalSet -> {
-            itemModelGenerators.generateFlatItem(metalSet.primary, ModelTemplates.FLAT_ITEM);
-            itemModelGenerators.generateFlatItem(metalSet.nugget, ModelTemplates.FLAT_ITEM);
-            itemModelGenerators.generateFlatItem(metalSet.raw, ModelTemplates.FLAT_ITEM);
+        SetApplier.applyToMaterials(set -> {
+            itemModelGenerators.generateFlatItem(set.primary, ModelTemplates.FLAT_ITEM);
+        });
+        SetApplier.applyToMetals(set -> {
+            itemModelGenerators.generateFlatItem(set.nugget, ModelTemplates.FLAT_ITEM);
+            itemModelGenerators.generateFlatItem(set.raw, ModelTemplates.FLAT_ITEM);
+        });
+        SetApplier.applyToAlloys(set -> {
+            itemModelGenerators.generateFlatItem(set.nugget, ModelTemplates.FLAT_ITEM);
         });
 
         ModelTemplate OversizedFlatItemModel = new ModelTemplate(Optional.of(largeItemId), Optional.empty(), TextureSlot.LAYER0);

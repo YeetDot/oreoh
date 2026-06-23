@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "brass",
+  "key": {
+    "#": "oreoh:brass_nugget"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "oreoh:brass_ingot"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "experience": 1.0,
+  "group": "iridium",
+  "ingredient": "oreoh:iridium_ore",
+  "result": {
+    "id": "oreoh:iridium_ingot"
+  }
+}

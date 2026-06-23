@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#c:storage_blocks/raw_aluminum",
+    "#c:storage_blocks/raw_nickel",
+    "#c:storage_blocks/raw_zinc",
+    "#c:storage_blocks/raw_silver",
+    "#c:storage_blocks/raw_tin",
+    "#c:storage_blocks/raw_osmium",
+    "#c:storage_blocks/raw_iridium",
+    "#c:storage_blocks/raw_platinum",
+    "#c:storage_blocks/raw_lead",
+    "#c:storage_blocks/raw_uranium"
+  ]
+}

@@ -24,17 +24,15 @@ public class BlockLootTableProvider extends FabricBlockLootSubProvider {
 
     @Override
     public void generate() {
-        SetApplier.applyToMaterials(materialSet -> dropSelf(materialSet.storageBlock));
-        SetApplier.applyToMetals(metalSet -> {
-            dropSelf(metalSet.storageBlock);
-            dropSelf(metalSet.rawBlock);
+        SetApplier.applyToMaterials(set -> dropSelf(set.storageBlock));
+        SetApplier.applyToMetals(set -> {
+            dropSelf(set.rawBlock);
 
-            // Determine drop counts based on the metal name
             int minDrops = 1;
             int maxDrops = 1;
             boolean isMultiDrop = false;
 
-            switch (metalSet.name()) {
+            switch (set.name()) {
                 case "aluminum" -> {
                     minDrops = 2;
                     maxDrops = 5;
@@ -54,15 +52,47 @@ public class BlockLootTableProvider extends FabricBlockLootSubProvider {
             }
 
             if (isMultiDrop) {
-                add(metalSet.oreStone, createMultipleOreDrops(metalSet.oreStone, metalSet.raw, minDrops, maxDrops));
-                add(metalSet.oreDeepslate, createMultipleOreDrops(metalSet.oreDeepslate, metalSet.raw, minDrops, maxDrops));
-                add(metalSet.oreNether, createMultipleOreDrops(metalSet.oreNether, metalSet.raw, minDrops, maxDrops));
-                add(metalSet.oreEnd, createMultipleOreDrops(metalSet.oreEnd, metalSet.raw, minDrops, maxDrops));
+                add(set.oreStone, createMultipleOreDrops(set.oreStone, set.raw, minDrops, maxDrops));
+                add(set.oreDeepslate, createMultipleOreDrops(set.oreDeepslate, set.raw, minDrops, maxDrops));
+                add(set.oreNether, createMultipleOreDrops(set.oreNether, set.raw, minDrops, maxDrops));
+                add(set.oreEnd, createMultipleOreDrops(set.oreEnd, set.raw, minDrops, maxDrops));
             } else {
-                add(metalSet.oreStone, createOreDrop(metalSet.oreStone, metalSet.raw));
-                add(metalSet.oreDeepslate, createOreDrop(metalSet.oreDeepslate, metalSet.raw));
-                add(metalSet.oreNether, createOreDrop(metalSet.oreNether, metalSet.raw));
-                add(metalSet.oreEnd, createOreDrop(metalSet.oreEnd, metalSet.raw));
+                add(set.oreStone, createOreDrop(set.oreStone, set.raw));
+                add(set.oreDeepslate, createOreDrop(set.oreDeepslate, set.raw));
+                add(set.oreNether, createOreDrop(set.oreNether, set.raw));
+                add(set.oreEnd, createOreDrop(set.oreEnd, set.raw));
+            }
+        });
+        SetApplier.applyToGems(set -> {
+
+            // Determine drop counts based on the metal name
+            int minDrops = 1;
+            int maxDrops = 1;
+            boolean isMultiDrop = false;
+
+            switch (set.name()) {
+                case "cinnabar" -> {
+                    maxDrops = 3;
+                    isMultiDrop = true;
+                }
+                case "fluorite" -> {
+                    minDrops = 2;
+                    maxDrops = 4;
+                    isMultiDrop = true;
+                }
+                default -> {}
+            }
+
+            if (isMultiDrop) {
+                add(set.oreStone, createMultipleOreDrops(set.oreStone, set.primary, minDrops, maxDrops));
+                add(set.oreDeepslate, createMultipleOreDrops(set.oreDeepslate, set.primary, minDrops, maxDrops));
+                add(set.oreNether, createMultipleOreDrops(set.oreNether, set.primary, minDrops, maxDrops));
+                add(set.oreEnd, createMultipleOreDrops(set.oreEnd, set.primary, minDrops, maxDrops));
+            } else {
+                add(set.oreStone, createOreDrop(set.oreStone, set.primary));
+                add(set.oreDeepslate, createOreDrop(set.oreDeepslate, set.primary));
+                add(set.oreNether, createOreDrop(set.oreNether, set.primary));
+                add(set.oreEnd, createOreDrop(set.oreEnd, set.primary));
             }
         });
     }

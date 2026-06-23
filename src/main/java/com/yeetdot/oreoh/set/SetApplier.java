@@ -15,4 +15,12 @@ public class SetApplier {
         MetalSet.SETS.forEach(consumer);
     }
 
+    public static void applyToAlloys(Consumer<AlloySet> consumer) {
+        AlloySet.SETS.forEach(consumer);
+    }
+
+    public static void applyToGems(Consumer<GemSet> consumer) {
+        GemSet.SETS.forEach(consumer);
+    }
+
 }

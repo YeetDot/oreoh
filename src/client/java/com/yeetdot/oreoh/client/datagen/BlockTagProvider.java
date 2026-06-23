@@ -3,6 +3,7 @@ package com.yeetdot.oreoh.client.datagen;
 import com.yeetdot.oreoh.set.SetApplier;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -13,11 +14,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
-    public static final TagKey<Block> C_STORAGE_BLOCKS = TagKey.create(
-            Registries.BLOCK,
-            Identifier.fromNamespaceAndPath("c", "storage_blocks")
-    );
-    public static final TagKey<Block> C_ORES = TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ores"));
+    public static final TagKey<Block> C_ORES_IN_GROUND_END_STONE = TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "ores_in_ground/end_stone"));
 
     public BlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
         super(output, registryLookupFuture);
@@ -25,90 +22,98 @@ public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        SetApplier.applyToMaterials(materialSet -> {
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(materialSet.idSet.storageBlock());
-            tag(materialSet.tagSet.storageBlock())
-                    .add(materialSet.idSet.storageBlock());
-            switch (materialSet.hardness()) {
+        SetApplier.applyToMaterials(set -> {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(set.idSet.storageBlock());
+            tag(set.tagSet.storageBlock())
+                    .add(set.idSet.storageBlock());
+            switch (set.hardness()) {
                 case "stone":
                     tag(BlockTags.NEEDS_STONE_TOOL)
-                            .add(materialSet.idSet.storageBlock());
+                            .add(set.idSet.storageBlock());
                     break;
                 case "iron":
                     tag(BlockTags.NEEDS_IRON_TOOL)
-                            .add(materialSet.idSet.storageBlock());
+                            .add(set.idSet.storageBlock());
                     break;
                 case "diamond":
                     tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                            .add(materialSet.idSet.storageBlock());
+                            .add(set.idSet.storageBlock());
                     break;
                 default:
                     break;
             }
-            tag(C_STORAGE_BLOCKS)
-                    .addTag(materialSet.tagSet.storageBlock());
+            tag(ConventionalBlockTags.STORAGE_BLOCKS)
+                    .addTag(set.tagSet.storageBlock());
         });
-        SetApplier.applyToNaturals(naturalSet -> {
+        SetApplier.applyToNaturals(set -> {
             tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .add(naturalSet.idSet.oreStone())
-                    .add(naturalSet.idSet.oreDeepslate())
-                    .add(naturalSet.idSet.oreNether())
-                    .add(naturalSet.idSet.oreEnd());
-            tag(naturalSet.tagSet.oreParent())
-                    .add(naturalSet.idSet.oreStone())
-                    .add(naturalSet.idSet.oreDeepslate())
-                    .add(naturalSet.idSet.oreNether())
-                    .add(naturalSet.idSet.oreEnd());
-            switch (naturalSet.hardness()) {
+                    .add(set.idSet.oreStone())
+                    .add(set.idSet.oreDeepslate())
+                    .add(set.idSet.oreNether())
+                    .add(set.idSet.oreEnd());
+            tag(set.tagSet.oreParent())
+                    .add(set.idSet.oreStone())
+                    .add(set.idSet.oreDeepslate())
+                    .add(set.idSet.oreNether())
+                    .add(set.idSet.oreEnd());
+            switch (set.hardness()) {
                 case "stone":
                     tag(BlockTags.NEEDS_STONE_TOOL)
-                            .add(naturalSet.idSet.oreStone())
-                            .add(naturalSet.idSet.oreDeepslate())
-                            .add(naturalSet.idSet.oreNether())
-                            .add(naturalSet.idSet.oreEnd());
+                            .add(set.idSet.oreStone())
+                            .add(set.idSet.oreDeepslate())
+                            .add(set.idSet.oreNether())
+                            .add(set.idSet.oreEnd());
                     break;
                 case "iron":
                     tag(BlockTags.NEEDS_IRON_TOOL)
-                            .add(naturalSet.idSet.oreStone())
-                            .add(naturalSet.idSet.oreDeepslate())
-                            .add(naturalSet.idSet.oreNether())
-                            .add(naturalSet.idSet.oreEnd());
+                            .add(set.idSet.oreStone())
+                            .add(set.idSet.oreDeepslate())
+                            .add(set.idSet.oreNether())
+                            .add(set.idSet.oreEnd());
                     break;
                 case "diamond":
                     tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                            .add(naturalSet.idSet.oreStone())
-                            .add(naturalSet.idSet.oreDeepslate())
-                            .add(naturalSet.idSet.oreNether())
-                            .add(naturalSet.idSet.oreEnd());
+                            .add(set.idSet.oreStone())
+                            .add(set.idSet.oreDeepslate())
+                            .add(set.idSet.oreNether())
+                            .add(set.idSet.oreEnd());
                     break;
                 default:
                     break;
             }
-            tag(C_ORES)
-                    .addTag(naturalSet.tagSet.oreParent());
+            tag(ConventionalBlockTags.ORES)
+                    .addTag(set.tagSet.oreParent());
+            tag(ConventionalBlockTags.ORES_IN_GROUND_STONE)
+                    .add(set.idSet.oreStone());
+            tag(ConventionalBlockTags.ORES_IN_GROUND_DEEPSLATE)
+                    .add(set.idSet.oreDeepslate());
+            tag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
+                    .add(set.idSet.oreNether());
+            tag(C_ORES_IN_GROUND_END_STONE)
+                    .add(set.idSet.oreEnd());
         });
-        SetApplier.applyToMetals(metalSet -> {
-            tag(metalSet.tagSet.rawBlock())
-                    .add(metalSet.idSet.rawBlock());
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(metalSet.idSet.rawBlock());
-            switch (metalSet.hardness()) {
+        SetApplier.applyToMetals(set -> {
+            tag(set.tagSet.rawBlock())
+                    .add(set.idSet.rawBlock());
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(set.idSet.rawBlock());
+            switch (set.hardness()) {
                 case "stone":
                     tag(BlockTags.NEEDS_STONE_TOOL)
-                            .add(metalSet.idSet.rawBlock());
+                            .add(set.idSet.rawBlock());
                     break;
                 case "iron":
                     tag(BlockTags.NEEDS_IRON_TOOL)
-                            .add(metalSet.idSet.rawBlock());
+                            .add(set.idSet.rawBlock());
                     break;
                 case "diamond":
                     tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                            .add(metalSet.idSet.rawBlock());
+                            .add(set.idSet.rawBlock());
                     break;
                 default:
                     break;
             }
-            tag(C_STORAGE_BLOCKS)
-                    .addTag(metalSet.tagSet.rawBlock());
+            tag(ConventionalBlockTags.STORAGE_BLOCKS)
+                    .addTag(set.tagSet.rawBlock());
         });
     }
 }

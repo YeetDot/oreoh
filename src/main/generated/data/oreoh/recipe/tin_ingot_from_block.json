@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "tin",
+  "ingredients": [
+    "oreoh:tin_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:tin_ingot"
+  }
+}

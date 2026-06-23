@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "experience": 0.7,
+  "group": "cinnabar",
+  "ingredient": "oreoh:nether_cinnabar_ore",
+  "result": {
+    "id": "oreoh:cinnabar"
+  }
+}

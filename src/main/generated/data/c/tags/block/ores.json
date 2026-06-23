@@ -9,6 +9,11 @@
     "#c:ores/iridium",
     "#c:ores/platinum",
     "#c:ores/lead",
-    "#c:ores/uranium"
+    "#c:ores/uranium",
+    "#c:ores/ruby",
+    "#c:ores/peridot",
+    "#c:ores/sapphire",
+    "#c:ores/cinnabar",
+    "#c:ores/fluorite"
   ]
 }

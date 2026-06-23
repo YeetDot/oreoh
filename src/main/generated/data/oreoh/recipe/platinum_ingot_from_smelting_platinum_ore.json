@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "experience": 0.7,
+  "group": "platinum",
+  "ingredient": "oreoh:platinum_ore",
+  "result": {
+    "id": "oreoh:platinum_ingot"
+  }
+}

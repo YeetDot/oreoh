@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "electrum",
+  "key": {
+    "#": "oreoh:electrum_nugget"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "oreoh:electrum_ingot"
+  }
+}

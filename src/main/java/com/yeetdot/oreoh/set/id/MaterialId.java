@@ -6,12 +6,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-public interface MaterialId {
+public sealed interface MaterialId permits AlloyId, MaterialId.Set, NaturalId {
     String name();
+    boolean isIngot();
     default ResourceKey<Item> primary() {
-        return ResourceKey.create(Registries.ITEM, OreOh.id(name()));
+        return ResourceKey.create(Registries.ITEM, OreOh.id(name() + (isIngot() ? "_ingot" : "")));
     }
     default ResourceKey<Block> storageBlock() {
         return ResourceKey.create(Registries.BLOCK, OreOh.id(name() + "_block"));
     }
+
+    record Set(String name, boolean isIngot) implements MaterialId {}
 }

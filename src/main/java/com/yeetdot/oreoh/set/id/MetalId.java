@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-public interface MetalId extends NaturalId {
+public sealed interface MetalId extends NaturalId {
     default ResourceKey<Item> nugget() {
         return ResourceKey.create(Registries.ITEM, OreOh.id(name() + "_nugget"));
     }
@@ -15,5 +15,12 @@ public interface MetalId extends NaturalId {
     }
     default ResourceKey<Block> rawBlock() {
         return ResourceKey.create(Registries.BLOCK, OreOh.id("raw_" + name() + "_block"));
+    }
+
+    record Set(String name) implements MetalId {
+        @Override
+        public boolean isIngot() {
+            return true;
+        }
     }
 }

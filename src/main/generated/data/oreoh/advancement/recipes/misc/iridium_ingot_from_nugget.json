@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_iridium_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "items": "oreoh:iridium_nugget"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "oreoh:iridium_ingot_from_nugget"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_iridium_nugget"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "oreoh:iridium_ingot_from_nugget"
+    ]
+  }
+}

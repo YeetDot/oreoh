@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "cinnabar",
+  "ingredients": [
+    "oreoh:cinnabar_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:cinnabar"
+  }
+}

@@ -21,23 +21,27 @@ public class EN_USProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder translationBuilder) {
-        SetApplier.applyToMaterials(materialSet -> {
-            String name = capitalizeFirst(materialSet.name());
-            translationBuilder.add(materialSet.storageBlock, "Block of " + name);
+        SetApplier.applyToMaterials(set -> {
+            String name = capitalizeFirst(set.name());
+            translationBuilder.add(set.primary, name + (set.isIngot() ? " Ingot" : ""));
+            translationBuilder.add(set.storageBlock, "Block of " + name);
         });
-        SetApplier.applyToNaturals(naturalSet -> {
-            String name = capitalizeFirst(naturalSet.name());
-            translationBuilder.add(naturalSet.oreStone, name + " Ore");
-            translationBuilder.add(naturalSet.oreDeepslate, "Deepslate " + name + " Ore");
-            translationBuilder.add(naturalSet.oreNether, "Nether " + name + " Ore");
-            translationBuilder.add(naturalSet.oreEnd, "End " + name + " Ore");
+        SetApplier.applyToNaturals(set -> {
+            String name = capitalizeFirst(set.name());
+            translationBuilder.add(set.oreStone, name + " Ore");
+            translationBuilder.add(set.oreDeepslate, "Deepslate " + name + " Ore");
+            translationBuilder.add(set.oreNether, "Nether " + name + " Ore");
+            translationBuilder.add(set.oreEnd, "End " + name + " Ore");
         });
-        SetApplier.applyToMetals(metalSet -> {
-            String name = capitalizeFirst(metalSet.name());
-            translationBuilder.add(metalSet.primary, name + " Ingot");
-            translationBuilder.add(metalSet.nugget, name + " Nugget");
-            translationBuilder.add(metalSet.raw, "Raw " + name);
-            translationBuilder.add(metalSet.rawBlock, "Block of Raw " + name);
+        SetApplier.applyToMetals(set -> {
+            String name = capitalizeFirst(set.name());
+            translationBuilder.add(set.nugget, name + " Nugget");
+            translationBuilder.add(set.raw, "Raw " + name);
+            translationBuilder.add(set.rawBlock, "Block of Raw " + name);
+        });
+        SetApplier.applyToAlloys(set -> {
+            String name = capitalizeFirst(set.name());
+            translationBuilder.add(set.nugget, name + " Nugget");
         });
 
         translationBuilder.add(ModItems.GOLDEN_CUDGEL, "The Compliant Golden-Hooped Rod");

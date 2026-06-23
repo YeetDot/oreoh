@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "zinc",
+  "ingredients": [
+    "oreoh:zinc_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:zinc_ingot"
+  }
+}

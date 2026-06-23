@@ -14,15 +14,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class ModCreativeModeTabs {
     public static final CreativeModeTab OREOH_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, OreOh.id("oreoh_tab"), FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GOLDEN_CUDGEL)).title(Component.translatable("itemGroup.oreoh.tab")).displayItems(((parameters, output) -> {
-        SetApplier.applyToMaterials(materialSet -> output.accept(materialSet.primary));
-        SetApplier.applyToMaterials(materialSet -> output.accept(materialSet.storageBlock));
-        SetApplier.applyToNaturals(naturalSet -> output.accept(naturalSet.oreStone));
-        SetApplier.applyToNaturals(naturalSet -> output.accept(naturalSet.oreDeepslate));
-        SetApplier.applyToNaturals(naturalSet -> output.accept(naturalSet.oreNether));
-        SetApplier.applyToNaturals(naturalSet -> output.accept(naturalSet.oreEnd));
-        SetApplier.applyToMetals(metalSet -> output.accept(metalSet.rawBlock));
-        SetApplier.applyToMetals(metalSet -> output.accept(metalSet.nugget));
-        SetApplier.applyToMetals(metalSet -> output.accept(metalSet.raw));
+        SetApplier.applyToMaterials(set -> output.accept(set.primary));
+        SetApplier.applyToMetals(set -> output.accept(set.nugget));
+        SetApplier.applyToAlloys(set -> output.accept(set.nugget));
+        SetApplier.applyToMetals(set -> output.accept(set.raw));
+        SetApplier.applyToMaterials(set -> output.accept(set.storageBlock));
+        SetApplier.applyToNaturals(set -> output.accept(set.oreStone));
+        SetApplier.applyToNaturals(set -> output.accept(set.oreDeepslate));
+        SetApplier.applyToNaturals(set -> output.accept(set.oreNether));
+        SetApplier.applyToNaturals(set -> output.accept(set.oreEnd));
+        SetApplier.applyToMetals(set -> output.accept(set.rawBlock));
     })).build());
 
     private static void addItemToTab(ResourceKey<@NotNull CreativeModeTab> tab, Item item, Item beforeItem) {

@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 
-public interface NaturalId extends MaterialId {
+public sealed interface NaturalId extends MaterialId permits MetalId, GemId, NaturalId.Set {
     default ResourceKey<Block> oreStone() {
         return ResourceKey.create(Registries.BLOCK, OreOh.id(name() + "_ore"));
     }
@@ -18,4 +18,6 @@ public interface NaturalId extends MaterialId {
     default ResourceKey<Block> oreEnd() {
         return ResourceKey.create(Registries.BLOCK, OreOh.id("end_" + name() + "_ore"));
     }
+
+    record Set(String name, boolean isIngot) implements NaturalId {}
 }

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "silver",
+  "ingredients": [
+    "oreoh:silver_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:silver_ingot"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "oreoh:zinc_ingot"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:zinc_nugget"
+  }
+}

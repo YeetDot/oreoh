@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "invar",
+  "ingredients": [
+    "oreoh:invar_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "oreoh:invar_ingot"
+  }
+}

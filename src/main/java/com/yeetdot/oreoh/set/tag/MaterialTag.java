@@ -6,9 +6,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-public interface MaterialTag {
+public sealed interface MaterialTag permits AlloyTag, MaterialTag.Set, NaturalTag {
     String name();
-    default TagKey<Item> primary(String category) {
+    boolean isIngot();
+    default TagKey<Item> primary() {
+        String category = isIngot() ? "ingot" : "gems";
         return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", category + "/" + name()));
     }
     default TagKey<Block> storageBlock() {
@@ -17,4 +19,6 @@ public interface MaterialTag {
     default TagKey<Item> storageBlockItem() {
         return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "storage_blocks/" + name()));
     }
+
+    record Set(String name, boolean isIngot) implements MaterialTag {}
 }
