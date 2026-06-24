@@ -17,13 +17,32 @@ public abstract sealed class NaturalSet extends MaterialSet permits MetalSet, Ge
     public final Block oreEnd;
     public final NaturalId.Set idSet;
     public final NaturalTag.Set tagSet;
+    public final int veinSize;
+    public final int frequency;
+    public final int minY;
+    public final int maxY;
+    public final boolean placeInOverworld;
+    public final boolean placeInNether;
+    public final boolean placeInEnd;
+    public final boolean isTrapezoidal;
 
     public static final List<NaturalSet> SETS = new ArrayList<>();
 
-    public NaturalSet(String name, String hardness) {
+    public NaturalSet(String name, String hardness, int veinSize, int frequency, int minY, int maxY, boolean placeInOverworld, boolean placeInNether, boolean placeInEnd, boolean isTrapezoidal) {
         super(name, hardness);
+
         idSet = new NaturalId.Set(name, isIngot());
         tagSet = new NaturalTag.Set(name, isIngot());
+
+        this.veinSize = veinSize;
+        this.frequency = frequency;
+        this.minY = minY;
+        this.maxY = maxY;
+        this.placeInOverworld = placeInOverworld;
+        this.placeInNether = placeInNether;
+        this.placeInEnd = placeInEnd;
+        this.isTrapezoidal = isTrapezoidal;
+
         oreStone = ModBlocks.registerBlock(idSet.oreStone(), Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE));
         oreDeepslate = ModBlocks.registerBlock(idSet.oreDeepslate(), Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE));
         oreNether = ModBlocks.registerBlock(idSet.oreNether(), Block::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE));

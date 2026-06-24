@@ -12,8 +12,9 @@ public final class GemSet extends NaturalSet{
 
     public static final List<GemSet> SETS =  new ArrayList<>();
 
-    public GemSet(String name, String hardness) {
-        super(name, hardness);
+    public GemSet(String name, String hardness, int veinSize, int frequency, int minY, int maxY, boolean placeInOverworld, boolean placeInNether, boolean placeInEnd, boolean isTrapezoidal) {
+        super(name, hardness, veinSize, frequency, minY, maxY, placeInOverworld, placeInNether, placeInEnd, isTrapezoidal);
+
         idSet = new GemId.Set(name);
         tagSet = new GemTag.Set(name);
 

@@ -4,6 +4,7 @@ import com.yeetdot.oreoh.block.ModBlocks;
 import com.yeetdot.oreoh.creativetab.ModCreativeModeTabs;
 import com.yeetdot.oreoh.item.ModItems;
 import com.yeetdot.oreoh.set.ModSets;
+import com.yeetdot.oreoh.world.gen.ModWorldGeneration;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.Identifier;
@@ -22,6 +23,7 @@ public class OreOh implements ModInitializer {
         ModItems.registerItems();
         ModBlocks.registerBlocks();
         ModSets.registerSets();
+		ModWorldGeneration.generateWorldGen();
 	}
 
 	public static Identifier id(String path) {

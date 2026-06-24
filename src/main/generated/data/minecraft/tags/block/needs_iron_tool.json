@@ -1,6 +1,7 @@
 {
   "values": [
     "oreoh:nickel_block",
+    "oreoh:silver_block",
     "oreoh:osmium_block",
     "oreoh:platinum_block",
     "oreoh:bronze_block",
@@ -14,6 +15,10 @@
     "oreoh:deepslate_nickel_ore",
     "oreoh:nether_nickel_ore",
     "oreoh:end_nickel_ore",
+    "oreoh:silver_ore",
+    "oreoh:deepslate_silver_ore",
+    "oreoh:nether_silver_ore",
+    "oreoh:end_silver_ore",
     "oreoh:osmium_ore",
     "oreoh:deepslate_osmium_ore",
     "oreoh:nether_osmium_ore",
@@ -31,6 +36,7 @@
     "oreoh:nether_fluorite_ore",
     "oreoh:end_fluorite_ore",
     "oreoh:raw_nickel_block",
+    "oreoh:raw_silver_block",
     "oreoh:raw_osmium_block",
     "oreoh:raw_platinum_block"
   ]

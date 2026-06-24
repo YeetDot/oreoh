@@ -21,8 +21,9 @@ public final class MetalSet extends NaturalSet {
 
     public static final List<MetalSet> SETS = new ArrayList<>();
 
-    public MetalSet(String name, String hardness) {
-        super(name, hardness);
+    public MetalSet(String name, String hardness, int veinSize, int frequency, int minY, int maxY, boolean placeInOverworld, boolean placeInNether, boolean placeInEnd, boolean isTrapezoidal) {
+        super(name, hardness, veinSize, frequency, minY, maxY, placeInOverworld, placeInNether, placeInEnd, isTrapezoidal);
+
         idSet = new MetalId.Set(name);
         nugget = ModItems.register(idSet.nugget());
         raw = ModItems.register(idSet.rawItem());
@@ -31,6 +32,7 @@ public final class MetalSet extends NaturalSet {
 
         SETS.add(this);
     }
+
 
     @Override
     public boolean isIngot() {

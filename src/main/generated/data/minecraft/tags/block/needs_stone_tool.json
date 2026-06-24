@@ -2,7 +2,6 @@
   "values": [
     "oreoh:aluminum_block",
     "oreoh:zinc_block",
-    "oreoh:silver_block",
     "oreoh:tin_block",
     "oreoh:lead_block",
     "oreoh:ruby_block",
@@ -16,10 +15,6 @@
     "oreoh:deepslate_zinc_ore",
     "oreoh:nether_zinc_ore",
     "oreoh:end_zinc_ore",
-    "oreoh:silver_ore",
-    "oreoh:deepslate_silver_ore",
-    "oreoh:nether_silver_ore",
-    "oreoh:end_silver_ore",
     "oreoh:tin_ore",
     "oreoh:deepslate_tin_ore",
     "oreoh:nether_tin_ore",
@@ -42,7 +37,6 @@
     "oreoh:end_sapphire_ore",
     "oreoh:raw_aluminum_block",
     "oreoh:raw_zinc_block",
-    "oreoh:raw_silver_block",
     "oreoh:raw_tin_block",
     "oreoh:raw_lead_block"
   ]
