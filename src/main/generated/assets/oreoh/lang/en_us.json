@@ -135,5 +135,6 @@
   "item.oreoh.uranium_nugget": "Uranium Nugget",
   "item.oreoh.zinc_ingot": "Zinc Ingot",
   "item.oreoh.zinc_nugget": "Zinc Nugget",
-  "itemGroup.oreoh.tab": "OreOh!"
+  "itemGroup.oreoh.tab": "OreOh!",
+  "container.oreoh.crusher": "Crusher"
 }

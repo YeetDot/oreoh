@@ -4,6 +4,7 @@ import com.yeetdot.oreoh.OreOh;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ModSets {
     public static final MetalSet ALUMINUM = new MetalSet("aluminum", "stone", 10, 8, -16, 112, true, false, false, false);
     public static final MetalSet NICKEL = new MetalSet("nickel", "iron", 6, 5, -40, 60, true, false, false, false);

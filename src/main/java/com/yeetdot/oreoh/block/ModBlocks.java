@@ -13,9 +13,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+@SuppressWarnings("unused")
 public class ModBlocks {
     public static final Block ABLOCK = registerBlock("ablock", Block::new, BlockBehaviour.Properties.of());
-
+    public static final Block CRUSHER = registerBlock("crusher", CrusherBlock::new, BlockBehaviour.Properties.of());
+    
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function) {
         return registerBlock(name, function, BlockBehaviour.Properties.of());
     }

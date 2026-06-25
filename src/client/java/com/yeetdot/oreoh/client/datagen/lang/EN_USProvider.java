@@ -5,6 +5,7 @@ import com.yeetdot.oreoh.set.SetApplier;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +21,7 @@ public class EN_USProvider extends FabricLanguageProvider {
     }
 
     @Override
-    public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder translationBuilder) {
+    public void generateTranslations(HolderLookup.@NonNull Provider provider, TranslationBuilder translationBuilder) {
         SetApplier.applyToMaterials(set -> {
             String name = capitalizeFirst(set.name());
             translationBuilder.add(set.primary, name + (set.isIngot() ? " Ingot" : ""));
@@ -46,5 +47,6 @@ public class EN_USProvider extends FabricLanguageProvider {
 
         translationBuilder.add(ModItems.GOLDEN_CUDGEL, "The Compliant Golden-Hooped Rod");
         translationBuilder.add("itemGroup.oreoh.tab", "OreOh!");
+        translationBuilder.add("container.oreoh.crusher", "Crusher");
     }
 }
