@@ -13,6 +13,9 @@ public class ModBlockEntities {
     public static final BlockEntityType<CrusherBlockEntity> CRUSHER_BLOCK_ENTITY = register(
             "crusher_block_entity", CrusherBlockEntity::new, ModBlocks.CRUSHER
     );
+    public static final BlockEntityType<CreativeEnergyBlockEntity> CREATIVE_ENERGY_BLOCK_ENTITY = register(
+            "creative_energy_block_entity", CreativeEnergyBlockEntity::new, ModBlocks.CREATIVE_ENERGY_SOURCE
+    );
 
     private static <T extends BlockEntity> BlockEntityType<T> register(
             String name, FabricBlockEntityTypeBuilder.Factory<T> supplier, Block... blocks

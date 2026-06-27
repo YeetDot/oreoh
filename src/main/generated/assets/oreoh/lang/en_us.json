@@ -89,6 +89,8 @@
   "block.oreoh.uranium_ore": "Uranium Ore",
   "block.oreoh.zinc_block": "Block of Zinc",
   "block.oreoh.zinc_ore": "Zinc Ore",
+  "container.oreoh.creative_energy_block_entity": "Creative Energy Source",
+  "container.oreoh.crusher": "Crusher",
   "item.oreoh.aluminum_ingot": "Aluminum Ingot",
   "item.oreoh.aluminum_nugget": "Aluminum Nugget",
   "item.oreoh.brass_ingot": "Brass Ingot",
@@ -135,6 +137,5 @@
   "item.oreoh.uranium_nugget": "Uranium Nugget",
   "item.oreoh.zinc_ingot": "Zinc Ingot",
   "item.oreoh.zinc_nugget": "Zinc Nugget",
-  "itemGroup.oreoh.tab": "OreOh!",
-  "container.oreoh.crusher": "Crusher"
+  "itemGroup.oreoh.tab": "OreOh!"
 }

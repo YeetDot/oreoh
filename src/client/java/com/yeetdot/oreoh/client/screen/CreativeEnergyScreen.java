@@ -1,7 +1,7 @@
 package com.yeetdot.oreoh.client.screen;
 
 import com.yeetdot.oreoh.OreOh;
-import com.yeetdot.oreoh.menu.CrusherMenu;
+import com.yeetdot.oreoh.menu.CreativeEnergyMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -14,12 +14,11 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-public class CrusherScreen extends AbstractContainerScreen<CrusherMenu> {
-    public static final Identifier CRUSHER_LOCATION = OreOh.id("textures/gui/container/crusher.png");
-    public static final Identifier PROGRESS_SPRITE = OreOh.id("textures/gui/container/crusher_progress.png");
-    public static final Identifier ENERGY_SPRITE = OreOh.id("textures/gui/sprites/energy_sprite.png");
+public class CreativeEnergyScreen extends AbstractContainerScreen<CreativeEnergyMenu> {
+    public static final Identifier CREATIVE_ENERGY_LOCATION = OreOh.id("textures/gui/creative_energy.png");
+    public static final Identifier ENERGY_SPRITE = OreOh.id("textures/gui/sprites/large_energy_sprite.png");
     
-    public CrusherScreen(CrusherMenu menu, Inventory inventory, Component title) {
+    public CreativeEnergyScreen(CreativeEnergyMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
     }
 
@@ -28,25 +27,21 @@ public class CrusherScreen extends AbstractContainerScreen<CrusherMenu> {
         super.extractBackground(graphics, mouseX, mouseY, a);
         int xo = (this.width - this.imageWidth) / 2;
         int yo = (this.height - this.imageHeight) / 2;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, CRUSHER_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
-        int scaledProgress = this.menu.getScaledProgress(18);
-        if (scaledProgress > 0) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_SPRITE, 18, 4, 0, 0, xo + 60, yo + 44, scaledProgress, 9);
-        }
-        int scaledEnergy = this.menu.getScaledEnergy(36);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, CREATIVE_ENERGY_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        int scaledEnergy = this.menu.getScaledEnergy(56);
         if (scaledEnergy > 0) {
-            int yOffset = 36 - scaledEnergy;
+            int yOffset = 56 - scaledEnergy;
             graphics.blit(
                     RenderPipelines.GUI_TEXTURED,
                     ENERGY_SPRITE,        // Explicit file pointer
-                    xo + 150,                       // Target Screen X position
-                    yo + 20 + yOffset,              // Target Screen Y position (moves down as power drops)
+                    xo + 60,                       // Target Screen X position
+                    yo + 15 + yOffset,              // Target Screen Y position (moves down as power drops)
                     0.0F,                           // Source U inside the PNG file
                     0.0F + yOffset,                 // Source V inside the PNG file (crops from the top down)
-                    4,                              // Width of the box to render on the monitor
+                    56,                              // Width of the box to render on the monitor
                     scaledEnergy,                   // Height of the box to render on the monitor
-                    4,                              // TOTAL width of your individual PNG file asset
-                    36                              // TOTAL height of your individual PNG file asset
+                    56,                             // TOTAL width of your individual PNG file asset
+                    56                              // TOTAL height of your individual PNG file asset
             );
         }
     }
@@ -57,7 +52,7 @@ public class CrusherScreen extends AbstractContainerScreen<CrusherMenu> {
         int xo = (this.width - this.imageWidth) / 2;
         int yo = (this.height - this.imageHeight) / 2;
 
-        if (mouseX >= xo + 150 && mouseX < xo + 150 + 4 && mouseY >= yo + 20 && mouseY < yo + 20 + 36) {
+        if (mouseX >= xo + 60 && mouseX < xo + 60 + 56 && mouseY >= yo + 15 && mouseY < yo + 15 + 56) {
 
             long energyAmount = this.menu.getClientEnergyAmount();
             long energyCapacity = this.menu.getClientEnergyCapacity();

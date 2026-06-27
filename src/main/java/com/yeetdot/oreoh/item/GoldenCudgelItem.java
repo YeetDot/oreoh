@@ -7,19 +7,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.NonNull;
 
 public class GoldenCudgelItem extends Item {
     public GoldenCudgelItem(Properties properties) {
         super(properties
                 .sword(ToolMaterial.GOLD, 887, -2)
-                .component(DataComponents.ATTACK_RANGE, new AttackRange(0, 666, 0, 666, 10, 1)));
+                .component(DataComponents.ATTACK_RANGE, new AttackRange(0, 666, 0, 666, 10, 1))
+                .rarity(Rarity.EPIC));
     }
 
     @Override
-    public void hurtEnemy(ItemStack itemStack, LivingEntity mob, LivingEntity attacker) {
+    public void hurtEnemy(@NonNull ItemStack itemStack, @NonNull LivingEntity mob, @NonNull LivingEntity attacker) {
         super.hurtEnemy(itemStack, mob, attacker);
         if (attacker instanceof Player player && !attacker.level().isClientSide()) {
             ServerLevel world = (ServerLevel) attacker.level();

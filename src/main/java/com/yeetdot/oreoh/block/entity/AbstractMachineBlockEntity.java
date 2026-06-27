@@ -11,22 +11,19 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extends MachineRecipe<I>> extends BaseContainerBlockEntity implements WorldlyContainer {
-    protected SimpleEnergyStorage energyStorage;
+public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extends MachineRecipe<I>> extends AbstractEnergyContainerBlockEntity implements WorldlyContainer {
     protected NonNullList<ItemStack> items;
     protected int currentProgress = 0;
     protected int maxProgress = 200;
@@ -41,10 +38,16 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
             return switch (dataId) {
                 case 0 -> AbstractMachineBlockEntity.this.currentProgress;
                 case 1 -> AbstractMachineBlockEntity.this.maxProgress;
-                case 2 -> (int) (AbstractMachineBlockEntity.this.energyStorage.getAmount() >> 32);
-                case 3 -> (int) (AbstractMachineBlockEntity.this.energyStorage.getAmount() & 0xFFFFFFFFL);
-                case 4 -> (int) (AbstractMachineBlockEntity.this.energyStorage.getCapacity() >> 32);
-                case 5 -> (int) (AbstractMachineBlockEntity.this.energyStorage.getCapacity() & 0xFFFFFFFFL);
+                case 2 -> {
+                    long amount = AbstractMachineBlockEntity.this.energyStorage.getAmount();
+                    long capacity = AbstractMachineBlockEntity.this.energyStorage.getCapacity();
+
+                    if (capacity == 0) {
+                        yield 0; 
+                    } else {
+                        yield (int) ((amount * 10000) / capacity); 
+                    }
+                }
                 default -> 0;
             };
         }
@@ -54,28 +57,21 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
             switch (dataId) {
                 case 0 -> AbstractMachineBlockEntity.this.currentProgress = value;
                 case 1 -> AbstractMachineBlockEntity.this.maxProgress = value;
-                case 2 -> AbstractMachineBlockEntity.this.energyStorage.amount =
-                        (AbstractMachineBlockEntity.this.energyStorage.amount & 0x00000000FFFFFFFFL) | ((long) value << 32);
-                case 3 -> AbstractMachineBlockEntity.this.energyStorage.amount =
-                        (AbstractMachineBlockEntity.this.energyStorage.amount & 0xFFFFFFFF00000000L) | (value & 0xFFFFFFFFL);
-                case 4,5 -> {
-                    // Energy Capacity is final
-                }
+                case 2 -> {}
             }
         }
 
         @Override
         public int getCount() {
-            return 6;
+            return 3;
         }
     };
 
-    protected AbstractMachineBlockEntity(final BlockEntityType<?> type, final BlockPos worldPosition, final BlockState blockState, int inputSlots, int outputSlots, int capacity, int insertPerTick) {
-        super(type, worldPosition, blockState);
+    protected AbstractMachineBlockEntity(final BlockEntityType<?> type, final BlockPos worldPosition, final BlockState blockState, int inputSlots, int outputSlots, long capacity, long insertPerTick) {
+        super(type, worldPosition, blockState, capacity, insertPerTick, 0);
         this.items = NonNullList.withSize(inputSlots + outputSlots, ItemStack.EMPTY);
         this.inputSlots = inputSlots;
         this.outputSlots = outputSlots;
-        this.energyStorage = new SimpleEnergyStorage(capacity, insertPerTick, 0);
         this.quickCheck = RecipeManager.createCheck(getRecipeType());
         Arrays.fill(sideItemModes, SideItemMode.NONE);
         Arrays.fill(sideEnergyModes, SideEnergyMode.IN_OUT);
@@ -85,6 +81,8 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     public static <In extends RecipeInput, R extends MachineRecipe<In>> void serverTick(ServerLevel level, AbstractMachineBlockEntity<In, R> entity) {
+        entity.syncEnergyToOpenMenus(level);
+        
         In recipeInput = entity.createRecipeInput();
 
         entity.getCurrentRecipe(level).ifPresent(recipe -> {
@@ -174,7 +172,6 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
         ContainerHelper.loadAllItems(input, this.items);
         this.currentProgress = input.getShortOr("progress", (short) 0);
         this.maxProgress = input.getShortOr("maxProgress", (short) 200);
-        energyStorage.amount = input.getLongOr("energy", 0L);
     }
 
     @Override
@@ -183,7 +180,6 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
         ContainerHelper.saveAllItems(output, this.items);
         output.putShort("progress", (short) currentProgress);
         output.putShort("maxProgress", (short) maxProgress);
-        output.putLong("energy", energyStorage.getAmount());
     }
 
     protected abstract RecipeType<T> getRecipeType();
@@ -251,14 +247,11 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
         }
         return false;
     }
-    
-    public SimpleEnergyStorage getEnergyStorage() {
-        return this.energyStorage;
-    }
 
     protected abstract int[] getInputSlots();
     
     protected abstract int[] getOutputSlots();
     
     protected abstract int[] getCatalystSlots();
+
 }

@@ -17,6 +17,7 @@ import java.util.function.Function;
 public class ModBlocks {
     public static final Block ABLOCK = registerBlock("ablock", Block::new, BlockBehaviour.Properties.of());
     public static final Block CRUSHER = registerBlock("crusher", CrusherBlock::new, BlockBehaviour.Properties.of());
+    public static final Block CREATIVE_ENERGY_SOURCE = registerBlock("creative_energy_source", CreativeEnergyBlock::new, BlockBehaviour.Properties.of());
     
     public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function) {
         return registerBlock(name, function, BlockBehaviour.Properties.of());

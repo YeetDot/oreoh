@@ -2,13 +2,16 @@ package com.yeetdot.oreoh.block;
 
 import com.mojang.serialization.MapCodec;
 import com.yeetdot.oreoh.block.entity.AbstractMachineBlockEntity;
+import com.yeetdot.oreoh.item.ModItems;
 import com.yeetdot.oreoh.recipe.MachineRecipeInput;
 import com.yeetdot.oreoh.recipe.MachineRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -35,7 +38,18 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
 
     @Override
     protected @NonNull InteractionResult useWithoutItem(@NonNull BlockState state, Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
+        if (!level.isClientSide() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+            this.openContainer(level, pos, player);
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    protected @NonNull InteractionResult useItemOn(ItemStack itemStack, @NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
+        if (itemStack.is(ModItems.WRENCH)) {
+            return InteractionResult.PASS;
+        } else if (!level.isClientSide()) {
             this.openContainer(level, pos, player);
         }
 
@@ -67,6 +81,7 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
         builder.add(HorizontalDirectionalBlock.FACING, ACTIVE);
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected static <T extends BlockEntity> BlockEntityTicker<T> createMachineTicker(
             Level level,
             BlockEntityType<T> actualType,

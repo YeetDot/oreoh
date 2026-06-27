@@ -48,5 +48,6 @@ public class EN_USProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.GOLDEN_CUDGEL, "The Compliant Golden-Hooped Rod");
         translationBuilder.add("itemGroup.oreoh.tab", "OreOh!");
         translationBuilder.add("container.oreoh.crusher", "Crusher");
+        translationBuilder.add("container.oreoh.creative_energy_block_entity", "Creative Energy Source");
     }
 }

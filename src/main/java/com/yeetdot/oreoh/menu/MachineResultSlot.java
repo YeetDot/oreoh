@@ -1,4 +1,4 @@
-package com.yeetdot.oreoh.screen;
+package com.yeetdot.oreoh.menu;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;

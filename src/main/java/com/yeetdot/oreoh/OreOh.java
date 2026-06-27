@@ -5,12 +5,14 @@ import com.yeetdot.oreoh.block.entity.AbstractMachineBlockEntity;
 import com.yeetdot.oreoh.block.entity.ModBlockEntities;
 import com.yeetdot.oreoh.creativetab.ModCreativeModeTabs;
 import com.yeetdot.oreoh.item.ModItems;
+import com.yeetdot.oreoh.network.EnergySyncPayload;
 import com.yeetdot.oreoh.recipe.ModRecipes;
-import com.yeetdot.oreoh.screen.ModMenuTypes;
+import com.yeetdot.oreoh.menu.ModMenuTypes;
 import com.yeetdot.oreoh.set.ModSets;
 import com.yeetdot.oreoh.world.gen.ModWorldGeneration;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.resources.Identifier;
 
 import org.slf4j.Logger;
@@ -39,9 +41,10 @@ public class OreOh implements ModInitializer {
 			}
 			return null;
 			}, 
-				ModBlockEntities.CRUSHER_BLOCK_ENTITY
+				ModBlockEntities.CRUSHER_BLOCK_ENTITY, ModBlockEntities.CREATIVE_ENERGY_BLOCK_ENTITY
 		);
-		
+
+		PayloadTypeRegistry.clientboundPlay().register(EnergySyncPayload.TYPE, EnergySyncPayload.CODEC);
 	}
 
 	public static Identifier id(String path) {

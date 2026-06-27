@@ -11,6 +11,7 @@ import java.util.function.Function;
 
 public class ModItems {
     public static final Item GOLDEN_CUDGEL = register("golden_cudgel", GoldenCudgelItem::new);
+    public static final Item WRENCH = register("wrench", WrenchItem::new);
 
     public static Item register(String name) {
         return register(name, Item::new);
