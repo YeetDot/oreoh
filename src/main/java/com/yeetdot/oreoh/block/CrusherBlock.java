@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 public class CrusherBlock extends AbstractMachineBlock{
@@ -22,7 +21,7 @@ public class CrusherBlock extends AbstractMachineBlock{
     }
 
     @Override
-    protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+    protected  MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
@@ -34,12 +33,12 @@ public class CrusherBlock extends AbstractMachineBlock{
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NonNull Level level, @NonNull BlockState blockState, @NonNull BlockEntityType<T> type) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level,  BlockState blockState,  BlockEntityType<T> type) {
         return createMachineTicker(level, type, ModBlockEntities.CRUSHER_BLOCK_ENTITY);
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos worldPosition, @NonNull BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos worldPosition,  BlockState blockState) {
         return new CrusherBlockEntity(worldPosition, blockState);
     }
 }

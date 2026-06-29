@@ -3,9 +3,7 @@ package com.yeetdot.oreoh.recipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record CrusherRecipe(
@@ -16,8 +14,11 @@ public record CrusherRecipe(
 ) implements MachineRecipe<MachineRecipeInput> {
 
     @Override
-    public boolean matches(@NonNull MachineRecipeInput input, @NonNull Level level) {
-        return false;
+    public boolean matches(MachineRecipeInput input,  Level level) {
+        for (ItemStack stack : input.inputs()) {
+            if (!ingredient().ingredient().test(stack) || stack.count() < ingredient().count()) return false;
+        }
+        return true;
     }
 
     /**
@@ -25,7 +26,7 @@ public record CrusherRecipe(
      */
     @Deprecated
     @Override
-    public @NonNull ItemStack assemble(@NonNull MachineRecipeInput input) {
+    public  ItemStack assemble(MachineRecipeInput input) {
         return outputs.getFirst().stack();
     }
 
@@ -35,8 +36,8 @@ public record CrusherRecipe(
     }
 
     @Override
-    public @NonNull String group() {
-        return "";
+    public String group() {
+        return "crusher";
     }
 
     @Override
@@ -51,19 +52,12 @@ public record CrusherRecipe(
 
     @Override
     public PlacementInfo placementInfo() {
-        return null;
+        return PlacementInfo.create(ingredient().ingredient());
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
-
-    @Override
-    public List<ItemStack> assembleAll() {
-        List<ItemStack> list = new ArrayList<>();
-        outputs.forEach(itemStack -> list.add(itemStack.stack()));
-        return list;
+        return RecipeBookCategories.CRAFTING_MISC;
     }
 
     @Override

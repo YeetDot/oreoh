@@ -6,13 +6,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.jspecify.annotations.NonNull;
 
 public record EnergySyncPayload(BlockPos pos, long energyAmount, long energyCapacity) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<EnergySyncPayload> TYPE = new CustomPacketPayload.Type<>(OreOh.id("energy_sync"));
     
     @Override
-    public @NonNull Type<? extends CustomPacketPayload> type() {
+    public  Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 

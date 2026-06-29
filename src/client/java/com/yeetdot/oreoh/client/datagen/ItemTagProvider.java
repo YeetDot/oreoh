@@ -78,9 +78,7 @@ public class ItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
             this.tag(ConventionalItemTags.NUGGETS)
                     .addTag(set.tagSet.nugget());
         });
-        SetApplier.applyToGems(set -> {
-            this.tag(ConventionalItemTags.GEMS)
-                    .addTag(set.tagSet.primary());
-        });
+        SetApplier.applyToGems(set -> this.tag(ConventionalItemTags.GEMS)
+                .addTag(set.tagSet.primary()));
     }
 }

@@ -6,10 +6,12 @@ import net.minecraft.world.item.crafting.RecipeInput;
 
 import java.util.List;
 
-public interface MachineRecipe<T extends RecipeInput> extends Recipe<T> {
-    List<ItemStack> assembleAll();
+public interface MachineRecipe<Input extends RecipeInput> extends Recipe<Input> {
+    default List<ItemStack> assembleAll() {
+        return outputs().stream().map(OutputWithChance::stack).toList();
+    }
     List<OutputWithChance> outputs();
     
-    long getRecipeEnergy(T input);
-    int getRecipeDuration(T input);
+    long getRecipeEnergy(Input input);
+    int getRecipeDuration(Input input);
 }

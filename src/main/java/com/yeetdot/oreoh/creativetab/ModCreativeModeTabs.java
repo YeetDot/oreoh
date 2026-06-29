@@ -10,8 +10,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
-import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 public class ModCreativeModeTabs {
     public static final CreativeModeTab OREOH_TAB = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, OreOh.id("oreoh_tab"), FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GOLDEN_CUDGEL)).title(Component.translatable("itemGroup.oreoh.tab")).displayItems(((parameters, output) -> {
         SetApplier.applyToMaterials(set -> output.accept(set.primary));
@@ -26,7 +26,7 @@ public class ModCreativeModeTabs {
         SetApplier.applyToMetals(set -> output.accept(set.rawBlock));
     })).build());
 
-    private static void addItemToTab(ResourceKey<@NotNull CreativeModeTab> tab, Item item, Item beforeItem) {
+    private static void addItemToTab(ResourceKey<CreativeModeTab> tab, Item item, Item beforeItem) {
         CreativeModeTabEvents.modifyOutputEvent(tab).register(output -> output.insertAfter(beforeItem, item));
     }
 

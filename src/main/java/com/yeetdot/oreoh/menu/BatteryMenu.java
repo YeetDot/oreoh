@@ -7,15 +7,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.NonNull;
 
-public class CreativeEnergyMenu extends AbstractEnergyContainerMenu {
-    public CreativeEnergyMenu(int containerId, Inventory playerInventory, BlockPos blockPos) {
+public class BatteryMenu extends AbstractEnergyContainerMenu {
+    public BatteryMenu(int containerId, Inventory playerInventory, BlockPos blockPos) {
         this(containerId, playerInventory, new SimpleContainer(2), blockPos);
     }
 
-    public CreativeEnergyMenu(int containerId, Inventory playerInventory, Container container, BlockPos pos) {
-        super(ModMenuTypes.CREATIVE_ENERGY_MENU, containerId, container, pos);
+    public BatteryMenu(int containerId, Inventory playerInventory, Container container, BlockPos pos) {
+        super(ModMenuTypes.BATTERY_MENU, containerId, container, pos);
         this.container = container;
         container.startOpen(playerInventory.player);
         checkContainerSize(this.container, 2);
@@ -25,7 +24,7 @@ public class CreativeEnergyMenu extends AbstractEnergyContainerMenu {
     }
 
     @Override
-    public @NonNull ItemStack quickMoveStack(@NonNull Player player, int index) {
+    public  ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 

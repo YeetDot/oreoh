@@ -6,5 +6,9 @@ public enum SideItemMode {
     OUTPUT,
     IN_OUT,
     CATALYST,
-    ALL
+    ALL;
+
+    public SideItemMode next() {
+        return values()[(this.ordinal() + 1) % values().length];
+    }
 }

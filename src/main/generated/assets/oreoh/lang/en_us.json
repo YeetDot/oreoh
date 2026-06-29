@@ -89,6 +89,7 @@
   "block.oreoh.uranium_ore": "Uranium Ore",
   "block.oreoh.zinc_block": "Block of Zinc",
   "block.oreoh.zinc_ore": "Zinc Ore",
+  "container.oreoh.battery_block_entity": "Battery",
   "container.oreoh.creative_energy_block_entity": "Creative Energy Source",
   "container.oreoh.crusher": "Crusher",
   "item.oreoh.aluminum_ingot": "Aluminum Ingot",
@@ -135,6 +136,9 @@
   "item.oreoh.tin_nugget": "Tin Nugget",
   "item.oreoh.uranium_ingot": "Uranium Ingot",
   "item.oreoh.uranium_nugget": "Uranium Nugget",
+  "item.oreoh.wrench": "Wrench",
+  "item.oreoh.wrench.change_mode": "This side is now set to %s",
+  "item.oreoh.wrench.zero_message": "Energy is now set to %s",
   "item.oreoh.zinc_ingot": "Zinc Ingot",
   "item.oreoh.zinc_nugget": "Zinc Nugget",
   "itemGroup.oreoh.tab": "OreOh!"

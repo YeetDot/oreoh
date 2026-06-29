@@ -89,3 +89,10 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs.addAll([
+			"-Aorg.jspecify.default=nullmarked"
+	])
+}
+

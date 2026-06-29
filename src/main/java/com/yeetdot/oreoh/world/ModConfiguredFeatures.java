@@ -1,15 +1,11 @@
 package com.yeetdot.oreoh.world;
 
 import com.yeetdot.oreoh.OreOh;
-import com.yeetdot.oreoh.block.ModBlocks;
 import com.yeetdot.oreoh.set.SetApplier;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;

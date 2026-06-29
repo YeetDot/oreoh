@@ -23,14 +23,12 @@ public class RecipeProvider extends FabricRecipeProvider {
         return new net.minecraft.data.recipes.RecipeProvider(registries, output) {
             @Override
             public void buildRecipes() {
-                SetApplier.applyToMaterials(set -> {
-                    nineBlockStorageRecipesRecipesWithCustomUnpacking(
-                            RecipeCategory.MISC, set.primary,
-                            RecipeCategory.BUILDING_BLOCKS, set.storageBlock,
-                            set.name() + (set.isIngot() ? "_ingot" : "") + "_from_block",
-                            set.name()
-                    );
-                });
+                SetApplier.applyToMaterials(set -> nineBlockStorageRecipesRecipesWithCustomUnpacking(
+                        RecipeCategory.MISC, set.primary,
+                        RecipeCategory.BUILDING_BLOCKS, set.storageBlock,
+                        set.name() + (set.isIngot() ? "_ingot" : "") + "_from_block",
+                        set.name()
+                ));
                 SetApplier.applyToNaturals(set -> {
                     List<ItemLike> smeltable = new ArrayList<>();
                     smeltable.add(set.oreStone);
@@ -52,13 +50,11 @@ public class RecipeProvider extends FabricRecipeProvider {
                     oreSmelting(smeltable, RecipeCategory.MISC, CookingBookCategory.BLOCKS, set.primary, set.hardness().equals("diamond") ? 1.0F : 0.7F, 200, set.name());
                     oreBlasting(smeltable, RecipeCategory.MISC, CookingBookCategory.BLOCKS, set.primary, set.hardness().equals("diamond") ? 1.0F : 0.7F, 100, set.name());
                 });
-                SetApplier.applyToAlloys(set -> {
-                    nineBlockStorageRecipesWithCustomPacking(
-                            RecipeCategory.MISC, set.nugget,
-                            RecipeCategory.MISC, set.primary,
-                            set.name() + "_ingot_from_nugget",
-                            set.name());
-                });
+                SetApplier.applyToAlloys(set -> nineBlockStorageRecipesWithCustomPacking(
+                        RecipeCategory.MISC, set.nugget,
+                        RecipeCategory.MISC, set.primary,
+                        set.name() + "_ingot_from_nugget",
+                        set.name()));
             }
         };
     }

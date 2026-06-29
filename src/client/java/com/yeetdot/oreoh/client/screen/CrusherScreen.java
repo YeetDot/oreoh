@@ -3,70 +3,38 @@ package com.yeetdot.oreoh.client.screen;
 import com.yeetdot.oreoh.OreOh;
 import com.yeetdot.oreoh.menu.CrusherMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import org.jspecify.annotations.NonNull;
 
-import java.util.List;
-
-public class CrusherScreen extends AbstractContainerScreen<CrusherMenu> {
+public class CrusherScreen extends EnergyDisplayingScreen<CrusherMenu> {
     public static final Identifier CRUSHER_LOCATION = OreOh.id("textures/gui/container/crusher.png");
     public static final Identifier PROGRESS_SPRITE = OreOh.id("textures/gui/container/crusher_progress.png");
     public static final Identifier ENERGY_SPRITE = OreOh.id("textures/gui/sprites/energy_sprite.png");
     
     public CrusherScreen(CrusherMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+        super(menu, inventory, title, 150, 20, 4, 36);
     }
 
     @Override
-    public void extractBackground(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
         int xo = (this.width - this.imageWidth) / 2;
         int yo = (this.height - this.imageHeight) / 2;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, CRUSHER_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
         int scaledProgress = this.menu.getScaledProgress(18);
         if (scaledProgress > 0) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_SPRITE, 18, 4, 0, 0, xo + 60, yo + 44, scaledProgress, 9);
-        }
-        int scaledEnergy = this.menu.getScaledEnergy(36);
-        if (scaledEnergy > 0) {
-            int yOffset = 36 - scaledEnergy;
-            graphics.blit(
-                    RenderPipelines.GUI_TEXTURED,
-                    ENERGY_SPRITE,        // Explicit file pointer
-                    xo + 150,                       // Target Screen X position
-                    yo + 20 + yOffset,              // Target Screen Y position (moves down as power drops)
-                    0.0F,                           // Source U inside the PNG file
-                    0.0F + yOffset,                 // Source V inside the PNG file (crops from the top down)
-                    4,                              // Width of the box to render on the monitor
-                    scaledEnergy,                   // Height of the box to render on the monitor
-                    4,                              // TOTAL width of your individual PNG file asset
-                    36                              // TOTAL height of your individual PNG file asset
-            );
+            graphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_SPRITE, xo + 60, yo + 44, 0, 0, scaledProgress, 0, 18, 4);
         }
     }
 
     @Override
-    protected void extractTooltip(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        super.extractTooltip(graphics, mouseX, mouseY);
-        int xo = (this.width - this.imageWidth) / 2;
-        int yo = (this.height - this.imageHeight) / 2;
+    protected Identifier getBackgroundTexture() {
+        return CRUSHER_LOCATION;
+    }
 
-        if (mouseX >= xo + 150 && mouseX < xo + 150 + 4 && mouseY >= yo + 20 && mouseY < yo + 20 + 36) {
-
-            long energyAmount = this.menu.getClientEnergyAmount();
-            long energyCapacity = this.menu.getClientEnergyCapacity();
-
-            Component tooltipText = Component.literal(String.format("%,d / %,d E", energyAmount, energyCapacity));
-
-            var a = ClientTooltipComponent.create(tooltipText.getVisualOrderText());
-
-            graphics.tooltip(this.font, List.of(a), mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
-        }
+    @Override
+    protected Identifier getEnergyDisplayTexture() {
+        return ENERGY_SPRITE;
     }
 }

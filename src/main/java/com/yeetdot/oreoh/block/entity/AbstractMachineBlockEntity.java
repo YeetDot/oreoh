@@ -10,12 +10,15 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
@@ -23,13 +26,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extends MachineRecipe<I>> extends AbstractEnergyContainerBlockEntity implements WorldlyContainer {
+public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Recipe extends MachineRecipe<Input>> extends AbstractEnergyContainerBlockEntity implements WorldlyContainer {
     protected NonNullList<ItemStack> items;
     protected int currentProgress = 0;
     protected int maxProgress = 200;
-    protected int inputSlots;
-    protected int outputSlots;
-    private final RecipeManager.CachedCheck<I, T> quickCheck;
+    protected final int outputSlots;
+    private final RecipeManager.CachedCheck<Input, Recipe> quickCheck;
     protected final SideItemMode[] sideItemModes = new SideItemMode[6];
     protected final SideEnergyMode[] sideEnergyModes = new SideEnergyMode[6];
     protected final ContainerData dataAccess = new ContainerData() {
@@ -70,20 +72,27 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     protected AbstractMachineBlockEntity(final BlockEntityType<?> type, final BlockPos worldPosition, final BlockState blockState, int inputSlots, int outputSlots, long capacity, long insertPerTick) {
         super(type, worldPosition, blockState, capacity, insertPerTick, 0);
         this.items = NonNullList.withSize(inputSlots + outputSlots, ItemStack.EMPTY);
-        this.inputSlots = inputSlots;
         this.outputSlots = outputSlots;
         this.quickCheck = RecipeManager.createCheck(getRecipeType());
+        Direction facing = this.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         Arrays.fill(sideItemModes, SideItemMode.NONE);
         Arrays.fill(sideEnergyModes, SideEnergyMode.IN_OUT);
-        sideItemModes[Direction.WEST.ordinal()] = SideItemMode.INPUT;
-        sideItemModes[Direction.EAST.ordinal()] = SideItemMode.OUTPUT;
-        sideItemModes[Direction.NORTH.ordinal()] = SideItemMode.CATALYST;
+        Direction absoluteOutputSide = facing.getCounterClockWise();
+        Direction absoluteCatalystSide = facing.getOpposite();
+        Direction absoluteInputSide = facing.getClockWise();
+        sideItemModes[absoluteInputSide.ordinal()] = SideItemMode.INPUT;
+        sideItemModes[absoluteOutputSide.ordinal()] = SideItemMode.OUTPUT;
+        sideItemModes[absoluteCatalystSide.ordinal()] = SideItemMode.CATALYST;
+
     }
 
-    public static <In extends RecipeInput, R extends MachineRecipe<In>> void serverTick(ServerLevel level, AbstractMachineBlockEntity<In, R> entity) {
+    public static <Input extends RecipeInput, Recipe extends MachineRecipe<Input>> void serverTick(
+            ServerLevel level, 
+            AbstractMachineBlockEntity<Input, Recipe> entity) 
+    {
         entity.syncEnergyToOpenMenus(level);
         
-        In recipeInput = entity.createRecipeInput();
+        Input recipeInput = entity.createRecipeInput();
 
         entity.getCurrentRecipe(level).ifPresent(recipe -> {
             if (recipe.value().getRecipeEnergy(recipeInput) <= entity.energyStorage.getAmount() && entity.canAcceptRecipeOutput(recipe)) {
@@ -94,6 +103,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
                 }
                 if (entity.currentProgress >= entity.maxProgress) {
                     entity.createOutputs(level, recipe);
+                    entity.currentProgress = 0;
                     entity.setChanged();
                 } else {
                     entity.currentProgress++;
@@ -103,13 +113,13 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
         });
     }
 
-    protected Optional<RecipeHolder<T>> getCurrentRecipe(ServerLevel level) {
+    protected Optional<RecipeHolder<Recipe>> getCurrentRecipe(ServerLevel level) {
         return this.quickCheck.getRecipeFor(createRecipeInput(), level);
     }
 
-    protected abstract I createRecipeInput();
+    protected abstract Input createRecipeInput();
 
-    protected void createOutputs(ServerLevel level, RecipeHolder<? extends T> recipeHolder) {
+    protected void createOutputs(ServerLevel level, RecipeHolder<? extends Recipe> recipeHolder) {
         if (!canAcceptRecipeOutput(recipeHolder)) return;
 
         var recipeOutputs = recipeHolder.value().outputs();
@@ -137,7 +147,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     // Removed 'static' and inventory parameter -> accesses 'this.items' and 'this.outputSlots' natively
-    private boolean canAcceptRecipeOutput(RecipeHolder<? extends T> recipe) {
+    private boolean canAcceptRecipeOutput(RecipeHolder<? extends Recipe> recipe) {
         List<ItemStack> recipeOutputs = recipe.value().assembleAll();
 
         if (recipeOutputs.size() > this.outputSlots) {
@@ -167,7 +177,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
 
 
     @Override
-    protected void loadAdditional(@NonNull ValueInput input) {
+    protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         ContainerHelper.loadAllItems(input, this.items);
         this.currentProgress = input.getShortOr("progress", (short) 0);
@@ -175,22 +185,22 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     @Override
-    protected void saveAdditional(@NonNull ValueOutput output) {
+    protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         ContainerHelper.saveAllItems(output, this.items);
         output.putShort("progress", (short) currentProgress);
         output.putShort("maxProgress", (short) maxProgress);
     }
 
-    protected abstract RecipeType<T> getRecipeType();
+    protected abstract RecipeType<Recipe> getRecipeType();
 
     @Override
-    protected @NonNull NonNullList<ItemStack> getItems() {
+    protected  NonNullList<ItemStack> getItems() {
         return items;
     }
 
     @Override
-    protected void setItems(@NonNull NonNullList<ItemStack> items) {
+    protected void setItems(NonNullList<ItemStack> items) {
         this.items = items;
     }
 
@@ -200,7 +210,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     @Override
-    public int @NonNull [] getSlotsForFace(Direction direction) {
+    public int  [] getSlotsForFace(Direction direction) {
         SideItemMode mode = this.sideItemModes[direction.ordinal()];
         int[] inOutSlots = IntStream.concat(IntStream.of(getInputSlots()), IntStream.of(getOutputSlots())).toArray();
         return switch (mode) {
@@ -214,7 +224,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int slot, @NonNull ItemStack itemStack, @Nullable Direction direction) {
+    public boolean canPlaceItemThroughFace(int slot,  ItemStack itemStack, @Nullable Direction direction) {
         if (direction == null) return false;
 
         if (!this.canPlaceItem(slot, itemStack)) return false;
@@ -230,7 +240,7 @@ public abstract class AbstractMachineBlockEntity<I extends RecipeInput, T extend
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int slot, @NonNull ItemStack itemStack, @NonNull Direction direction) {
+    public boolean canTakeItemThroughFace(int slot,  ItemStack itemStack,  Direction direction) {
         if (!this.canPlaceItem(slot, itemStack)) return false;
 
         SideItemMode mode = this.sideItemModes[direction.ordinal()];

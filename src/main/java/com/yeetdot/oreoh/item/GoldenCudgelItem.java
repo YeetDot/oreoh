@@ -11,7 +11,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
 
 public class GoldenCudgelItem extends Item {
     public GoldenCudgelItem(Properties properties) {
@@ -22,7 +21,7 @@ public class GoldenCudgelItem extends Item {
     }
 
     @Override
-    public void hurtEnemy(@NonNull ItemStack itemStack, @NonNull LivingEntity mob, @NonNull LivingEntity attacker) {
+    public void hurtEnemy(ItemStack itemStack,  LivingEntity mob,  LivingEntity attacker) {
         super.hurtEnemy(itemStack, mob, attacker);
         if (attacker instanceof Player player && !attacker.level().isClientSide()) {
             ServerLevel world = (ServerLevel) attacker.level();

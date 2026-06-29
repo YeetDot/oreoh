@@ -3,8 +3,8 @@ package com.yeetdot.oreoh.block;
 import com.mojang.serialization.MapCodec;
 import com.yeetdot.oreoh.block.entity.AbstractMachineBlockEntity;
 import com.yeetdot.oreoh.item.ModItems;
-import com.yeetdot.oreoh.recipe.MachineRecipeInput;
 import com.yeetdot.oreoh.recipe.MachineRecipe;
+import com.yeetdot.oreoh.recipe.MachineRecipeInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractMachineBlock extends BaseEntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -32,12 +32,12 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected abstract @NonNull MapCodec<? extends BaseEntityBlock> codec();
+    protected abstract  MapCodec<? extends BaseEntityBlock> codec();
 
     protected abstract void openContainer(Level level, BlockPos pos, Player player);
 
     @Override
-    protected @NonNull InteractionResult useWithoutItem(@NonNull BlockState state, Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull BlockHitResult hitResult) {
+    protected  InteractionResult useWithoutItem(BlockState state, Level level,  BlockPos pos,  Player player,  BlockHitResult hitResult) {
         if (!level.isClientSide() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
             this.openContainer(level, pos, player);
         }
@@ -46,7 +46,7 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NonNull InteractionResult useItemOn(ItemStack itemStack, @NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
+    protected  InteractionResult useItemOn(ItemStack itemStack,  BlockState state,  Level level,  BlockPos pos,  Player player,  InteractionHand hand,  BlockHitResult hitResult) {
         if (itemStack.is(ModItems.WRENCH)) {
             return InteractionResult.PASS;
         } else if (!level.isClientSide()) {
@@ -62,17 +62,17 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void affectNeighborsAfterRemoval(final @NonNull BlockState state, final @NonNull ServerLevel level, final @NonNull BlockPos pos, final boolean movedByPiston) {
+    protected void affectNeighborsAfterRemoval(final  BlockState state, final  ServerLevel level, final  BlockPos pos, final boolean movedByPiston) {
         Containers.updateNeighboursAfterDestroy(state, level, pos);
     }
 
     @Override
-    protected @NonNull BlockState rotate(final BlockState state, final Rotation rotation) {
+    protected  BlockState rotate(final BlockState state, final Rotation rotation) {
         return state.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(state.getValue(HorizontalDirectionalBlock.FACING)));
     }
 
     @Override
-    protected @NonNull BlockState mirror(final BlockState state, final Mirror mirror) {
+    protected  BlockState mirror(final BlockState state, final Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(HorizontalDirectionalBlock.FACING)));
     }
 
@@ -82,7 +82,7 @@ public abstract class AbstractMachineBlock extends BaseEntityBlock {
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createMachineTicker(
+    protected static @Nullable <T extends BlockEntity> BlockEntityTicker<T> createMachineTicker(
             Level level,
             BlockEntityType<T> actualType,
             BlockEntityType<? extends AbstractMachineBlockEntity<? extends MachineRecipeInput, ? extends MachineRecipe<? extends MachineRecipeInput>>> expectedType

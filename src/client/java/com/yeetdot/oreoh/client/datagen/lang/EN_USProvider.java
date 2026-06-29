@@ -46,8 +46,12 @@ public class EN_USProvider extends FabricLanguageProvider {
         });
 
         translationBuilder.add(ModItems.GOLDEN_CUDGEL, "The Compliant Golden-Hooped Rod");
+        translationBuilder.add(ModItems.WRENCH, "Wrench");
         translationBuilder.add("itemGroup.oreoh.tab", "OreOh!");
         translationBuilder.add("container.oreoh.crusher", "Crusher");
         translationBuilder.add("container.oreoh.creative_energy_block_entity", "Creative Energy Source");
+        translationBuilder.add("container.oreoh.battery_block_entity", "Battery");
+        translationBuilder.add("item.oreoh.wrench.zero_message", "Energy is now set to %s");
+        translationBuilder.add("item.oreoh.wrench.change_mode", "This side is now set to %s");
     }
 }

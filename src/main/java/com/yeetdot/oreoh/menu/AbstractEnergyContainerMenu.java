@@ -8,13 +8,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractEnergyContainerMenu extends AbstractContainerMenu implements EnergyMenu {
     Container container;
-    private long clientEnergyAmount = 0;
-    private long clientEnergyCapacity = 0;
+    private long clientEnergyAmount = -1;
+    private long clientEnergyCapacity = -1;
     private final BlockPos blockPos;
     
     protected AbstractEnergyContainerMenu(@Nullable MenuType<?> menuType, int containerId, Container container, BlockPos blockPos) {
@@ -76,11 +75,11 @@ public abstract class AbstractEnergyContainerMenu extends AbstractContainerMenu 
     }
 
     @Override
-    public boolean stillValid(@NonNull Player player) {
+    public boolean stillValid(Player player) {
         return this.container.stillValid(player);
     }
     
-    protected AbstractEnergyContainerBlockEntity getEnergyContainingBlockEntity() {
+    protected @Nullable AbstractEnergyContainerBlockEntity getEnergyContainingBlockEntity() {
         return container instanceof AbstractEnergyContainerBlockEntity entity ? entity : null;
     }
 
@@ -88,8 +87,6 @@ public abstract class AbstractEnergyContainerMenu extends AbstractContainerMenu 
     public void sendAllDataToRemote() {
         super.sendAllDataToRemote();
 
-        if (getEnergyContainingBlockEntity() != null) {
-            getEnergyContainingBlockEntity().setLastSyncedEnergyToInvalid();
-        }
+        if (getEnergyContainingBlockEntity() != null) getEnergyContainingBlockEntity().setLastSyncedEnergyToInvalid();
     }
 }

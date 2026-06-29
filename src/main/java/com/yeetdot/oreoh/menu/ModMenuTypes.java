@@ -12,8 +12,8 @@ import net.minecraft.world.inventory.MenuType;
 @SuppressWarnings("unused")
 public class ModMenuTypes {
     public static final MenuType<CrusherMenu> CRUSHER_MENU = registerExtended("crusher_menu", CrusherMenu::new);
-    public static final MenuType<CreativeEnergyMenu> CREATIVE_ENERGY_MENU = registerExtended("creative_energy_menu", CreativeEnergyMenu::new);
-    
+    public static final MenuType<BatteryMenu> BATTERY_MENU = registerExtended("battery_menu", BatteryMenu::new);
+
     private static <T extends AbstractContainerMenu> MenuType<T> register(String path, MenuType.MenuSupplier<T> menuSupplier) {
         return Registry.register(
                 BuiltInRegistries.MENU,
