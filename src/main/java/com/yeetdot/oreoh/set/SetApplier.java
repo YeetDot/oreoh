@@ -2,7 +2,7 @@ package com.yeetdot.oreoh.set;
 
 import java.util.function.Consumer;
 
-public class SetApplier {
+public final class SetApplier {
     public static void applyToMaterials(Consumer<MaterialSet> consumer) {
         MaterialSet.SETS.forEach(consumer);
     }

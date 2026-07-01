@@ -12,8 +12,8 @@ import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractEnergyContainerMenu extends AbstractContainerMenu implements EnergyMenu {
     Container container;
-    private long clientEnergyAmount = -1;
-    private long clientEnergyCapacity = -1;
+    protected long clientEnergyAmount = -1;
+    protected long clientEnergyCapacity = -1;
     private final BlockPos blockPos;
     
     protected AbstractEnergyContainerMenu(@Nullable MenuType<?> menuType, int containerId, Container container, BlockPos blockPos) {

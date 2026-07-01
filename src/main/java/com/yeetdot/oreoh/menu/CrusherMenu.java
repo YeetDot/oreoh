@@ -1,6 +1,5 @@
 package com.yeetdot.oreoh.menu;
 
-import com.yeetdot.oreoh.block.entity.CrusherBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -14,8 +13,6 @@ import net.minecraft.world.item.ItemStack;
 public class CrusherMenu extends AbstractEnergyContainerMenu {
     private final Container container;
     private final ContainerData crusherData;
-    private long clientEnergyAmount = 0;
-    private long clientEnergyCapacity = 0;
     
     public CrusherMenu(int containerId, Inventory playerInventory, BlockPos blockPos) {
         this(containerId, playerInventory, new SimpleContainer(3), new SimpleContainerData(6), blockPos);
@@ -36,24 +33,8 @@ public class CrusherMenu extends AbstractEnergyContainerMenu {
     }
 
     @Override
-    public void setEnergyValues(long energyAmount, long energyCapacity) {
-        this.clientEnergyAmount = energyAmount;
-        this.clientEnergyCapacity = energyCapacity;
-    }
-
-    @Override
-    public long getClientEnergyAmount() { return this.clientEnergyAmount; }
-    
-    @Override
-    public long getClientEnergyCapacity() { return this.clientEnergyCapacity; }
-
-    @Override
     public void sendAllDataToRemote() {
         super.sendAllDataToRemote();
-        
-        if (this.container instanceof CrusherBlockEntity crusherBE) {
-            crusherBE.setLastSyncedEnergyToInvalid();
-        }
     }
 
     @Override

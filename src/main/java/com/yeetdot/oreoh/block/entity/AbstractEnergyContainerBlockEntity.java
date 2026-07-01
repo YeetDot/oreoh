@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -21,7 +22,7 @@ import java.util.EnumMap;
 import java.util.Objects;
 
 public abstract class AbstractEnergyContainerBlockEntity extends BaseContainerBlockEntity implements ExtendedMenuProvider<BlockPos> {
-    protected final SimpleEnergyStorage energyStorage;
+    private final SimpleEnergyStorage energyStorage;
     protected long lastSyncedEnergyAmount = -1;
     protected long lastSyncedEnergyCapacity = -1;
     private EnumMap<Direction, SideEnergyMode> sideEnergyModes = new EnumMap<>(Direction.class);
@@ -35,9 +36,9 @@ public abstract class AbstractEnergyContainerBlockEntity extends BaseContainerBl
                     map -> map
             );
     
-    protected AbstractEnergyContainerBlockEntity(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState, long capacity, long insertPerTick, long extractPerTick) {
+    protected AbstractEnergyContainerBlockEntity(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState, long capacity, long extractPerTick) {
         super(type, worldPosition, blockState);
-        energyStorage = new SimpleEnergyStorage(capacity, insertPerTick, extractPerTick);
+        energyStorage = new SimpleEnergyStorage(capacity, Long.MAX_VALUE, extractPerTick);
         for (Direction direction : Direction.values()) {
             sideEnergyModes.put(direction, SideEnergyMode.IN_OUT);
         }
@@ -75,6 +76,13 @@ public abstract class AbstractEnergyContainerBlockEntity extends BaseContainerBl
     public void setLastSyncedEnergyToInvalid() {
         this.lastSyncedEnergyAmount = -1;
         this.lastSyncedEnergyCapacity = -1;
+    }
+    
+    public static void serverTick(ServerLevel level, BlockPos pos, AbstractEnergyContainerBlockEntity blockEntity) {
+        blockEntity.syncEnergyToOpenMenus(level);
+        if (blockEntity.getEnergyStorage().getAmount() == blockEntity.getEnergyStorage().getCapacity() - 1) {
+            blockEntity.energyStorage.amount = blockEntity.getEnergyStorage().getCapacity();
+        }
     }
 
     public void syncEnergyToOpenMenus(Level level) {

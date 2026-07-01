@@ -13,8 +13,7 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven {
-		name = "Modrinth"
-		url = "https://modrinth.com"
+		url = "https://api.modrinth.com/maven"
 	}
 }
 
@@ -43,6 +42,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	api include('teamreborn:energy:5.0.0')
+	compileOnly("maven.modrinth:jade:26.2.8+fabric")
+	
 }
 
 processResources {

@@ -26,12 +26,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Recipe extends MachineRecipe<Input>> extends AbstractEnergyContainerBlockEntity implements WorldlyContainer {
+public abstract class AbstractMachineBlockEntity<I extends RecipeInput, R extends MachineRecipe<I>> extends AbstractEnergyContainerBlockEntity implements WorldlyContainer {
     protected NonNullList<ItemStack> items;
     protected int currentProgress = 0;
     protected int maxProgress = 200;
     protected final int outputSlots;
-    private final RecipeManager.CachedCheck<Input, Recipe> quickCheck;
+    private final RecipeManager.CachedCheck<I, R> quickCheck;
     protected final SideItemMode[] sideItemModes = new SideItemMode[6];
     protected final SideEnergyMode[] sideEnergyModes = new SideEnergyMode[6];
     protected final ContainerData dataAccess = new ContainerData() {
@@ -41,8 +41,8 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
                 case 0 -> AbstractMachineBlockEntity.this.currentProgress;
                 case 1 -> AbstractMachineBlockEntity.this.maxProgress;
                 case 2 -> {
-                    long amount = AbstractMachineBlockEntity.this.energyStorage.getAmount();
-                    long capacity = AbstractMachineBlockEntity.this.energyStorage.getCapacity();
+                    long amount = AbstractMachineBlockEntity.this.getEnergyStorage().getAmount();
+                    long capacity = AbstractMachineBlockEntity.this.getEnergyStorage().getCapacity();
 
                     if (capacity == 0) {
                         yield 0; 
@@ -69,8 +69,8 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
         }
     };
 
-    protected AbstractMachineBlockEntity(final BlockEntityType<?> type, final BlockPos worldPosition, final BlockState blockState, int inputSlots, int outputSlots, long capacity, long insertPerTick) {
-        super(type, worldPosition, blockState, capacity, insertPerTick, 0);
+    protected AbstractMachineBlockEntity(final BlockEntityType<?> type, final BlockPos worldPosition, final BlockState blockState, int inputSlots, int outputSlots, long capacity) {
+        super(type, worldPosition, blockState, capacity, 0);
         this.items = NonNullList.withSize(inputSlots + outputSlots, ItemStack.EMPTY);
         this.outputSlots = outputSlots;
         this.quickCheck = RecipeManager.createCheck(getRecipeType());
@@ -86,19 +86,19 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
 
     }
 
-    public static <Input extends RecipeInput, Recipe extends MachineRecipe<Input>> void serverTick(
+    public static <I extends RecipeInput, R extends MachineRecipe<I>> void serverTick(
             ServerLevel level, 
-            AbstractMachineBlockEntity<Input, Recipe> entity) 
+            AbstractMachineBlockEntity<I, R> entity) 
     {
         entity.syncEnergyToOpenMenus(level);
         
-        Input recipeInput = entity.createRecipeInput();
+        I recipeInput = entity.createRecipeInput();
 
         entity.getCurrentRecipe(level).ifPresent(recipe -> {
-            if (recipe.value().getRecipeEnergy(recipeInput) <= entity.energyStorage.getAmount() && entity.canAcceptRecipeOutput(recipe)) {
+            if (recipe.value().getRecipeEnergy(recipeInput) <= entity.getEnergyStorage().getAmount() && entity.canAcceptRecipeOutput(recipe)) {
                 entity.maxProgress = recipe.value().getRecipeDuration(recipeInput);
                 try (Transaction transaction = Transaction.openOuter()) {
-                    entity.energyStorage.extract(recipe.value().getRecipeEnergy(recipeInput), transaction);
+                    entity.getEnergyStorage().extract(recipe.value().getRecipeEnergy(recipeInput), transaction);
                     transaction.commit();
                 }
                 if (entity.currentProgress >= entity.maxProgress) {
@@ -113,13 +113,13 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
         });
     }
 
-    protected Optional<RecipeHolder<Recipe>> getCurrentRecipe(ServerLevel level) {
+    protected Optional<RecipeHolder<R>> getCurrentRecipe(ServerLevel level) {
         return this.quickCheck.getRecipeFor(createRecipeInput(), level);
     }
 
-    protected abstract Input createRecipeInput();
+    protected abstract I createRecipeInput();
 
-    protected void createOutputs(ServerLevel level, RecipeHolder<? extends Recipe> recipeHolder) {
+    protected void createOutputs(ServerLevel level, RecipeHolder<? extends R> recipeHolder) {
         if (!canAcceptRecipeOutput(recipeHolder)) return;
 
         var recipeOutputs = recipeHolder.value().outputs();
@@ -147,7 +147,7 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
     }
 
     // Removed 'static' and inventory parameter -> accesses 'this.items' and 'this.outputSlots' natively
-    private boolean canAcceptRecipeOutput(RecipeHolder<? extends Recipe> recipe) {
+    private boolean canAcceptRecipeOutput(RecipeHolder<? extends R> recipe) {
         List<ItemStack> recipeOutputs = recipe.value().assembleAll();
 
         if (recipeOutputs.size() > this.outputSlots) {
@@ -192,7 +192,7 @@ public abstract class AbstractMachineBlockEntity<Input extends RecipeInput, Reci
         output.putShort("maxProgress", (short) maxProgress);
     }
 
-    protected abstract RecipeType<Recipe> getRecipeType();
+    protected abstract RecipeType<R> getRecipeType();
 
     @Override
     protected  NonNullList<ItemStack> getItems() {

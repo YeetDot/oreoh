@@ -1,8 +1,9 @@
 package com.yeetdot.oreoh.block.entity;
 
 import com.yeetdot.oreoh.OreOh;
-import com.yeetdot.oreoh.block.BatteryBlock;
 import com.yeetdot.oreoh.block.ModBlocks;
+import com.yeetdot.oreoh.energy.WireBlock;
+import com.yeetdot.oreoh.energy.WireBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,20 +12,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class ModBlockEntities {
-    public static final BlockEntityType<CrusherBlockEntity> CRUSHER_BLOCK_ENTITY = register(
-            "crusher_block_entity", CrusherBlockEntity::new, ModBlocks.CRUSHER
-    );
-    public static final BlockEntityType<CreativeEnergyBlockEntity> CREATIVE_ENERGY_BLOCK_ENTITY = register(
-            "creative_energy_block_entity", CreativeEnergyBlockEntity::new, ModBlocks.CREATIVE_ENERGY_SOURCE
-    );
-    public static final BlockEntityType<BatteryBlockEntity> BATTERY_BLOCK_ENTITY = register(
-            "battery_block_entity", (pos, state) -> {
-                if (!(state.getBlock() instanceof BatteryBlock batteryBlock)) {
-                    throw new IllegalStateException("Non-BatteryBlock used BatteryBlockEntity");
+    public static final BlockEntityType<WireBlockEntity> WIRE_BLOCK_ENTITY = register(
+            "wire_block_entity", (pos, state) -> {
+                if (!(state.getBlock() instanceof WireBlock wireBlock)) {
+                    throw new IllegalStateException("Non-WireBlock used WireBlockEntity");
                 }
-                return new BatteryBlockEntity(pos, state, batteryBlock.stats);
-            }, 
-            ModBlocks.BASIC_BATTERY
+                return new WireBlockEntity(pos, state, wireBlock.electrical, wireBlock.thermal);
+            }, ModBlocks.COPPER_WIRE
+    );
+    public static final BlockEntityType<CreativeGeneratorBlockEntity> CREATIVE_GENERATOR_BLOCK_ENTITY = register(
+            "creative_generator_block_entity", CreativeGeneratorBlockEntity::new, ModBlocks.CREATIVE_GENERATOR
     );
 
     private static <T extends BlockEntity> BlockEntityType<T> register(
