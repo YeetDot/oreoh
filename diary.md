@@ -1,2 +1,0 @@
-# July 1st
-The logs showed "[23:57:03] [Server thread/INFO] (oreoh) Set<ElectricGrid> count: 0, Real count: 12." I realized there was a memory leak, most likely due to the 3 different methods a grid could be removed. Accordingly, I simplified all removal logic to only one condition: when wire count reaches 0.
