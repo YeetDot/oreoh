@@ -1,6 +1,5 @@
 package com.yeetdot.oreoh.data;
 
-import com.yeetdot.oreoh.OreOh;
 import com.yeetdot.oreoh.api.ICapacitorNode;
 import com.yeetdot.oreoh.api.IElectricNode;
 import com.yeetdot.oreoh.api.IGeneratorNode;
@@ -14,11 +13,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ElectricGridRegistry {
     private final Map<UUID, ElectricGrid> electricGrids = new HashMap<>();
     private final Map<BlockPos, UUID> blockPositions = new HashMap<>();
-    private boolean needsMachineReconstruction = true;
 
     ElectricGridRegistry() {}
 
@@ -28,11 +27,7 @@ public class ElectricGridRegistry {
     }
 
     public void tickAllGrids(ServerLevel level) {
-        if (this.needsMachineReconstruction) {
-            OreOh.LOGGER.info("Machine reconstruction");
-            this.reconstructMachinesFromSave(level);
-            this.needsMachineReconstruction = false;
-        }
+        this.reconstructLoadedMachines(level);
 
         for (ElectricGrid grid : this.electricGrids.values()) {
             if (grid != null) {
@@ -41,27 +36,31 @@ public class ElectricGridRegistry {
         }
     }
 
-    private void reconstructMachinesFromSave(ServerLevel level) {
-        // Look through every wire loaded by your Codec
+    private void reconstructLoadedMachines(ServerLevel level) {
         for (Map.Entry<BlockPos, UUID> entry : this.blockPositions.entrySet()) {
             BlockPos wirePos = entry.getKey();
             UUID gridId = entry.getValue();
             ElectricGrid grid = this.electricGrids.get(gridId);
 
             if (grid != null) {
-                // Check all 6 sides around the wire
-                for (Direction dir : Direction.values()) {
-                    BlockPos neighborPos = wirePos.relative(dir);
+                if (grid.hasScannedWire(wirePos)) {
+                    continue;
+                }
 
-                    // At tick time, level.getBlockEntity() is completely safe and cannot cause a deadlock
-                    if (level.isLoaded(neighborPos)) {
-                        BlockEntity be = level.getBlockEntity(neighborPos);
-                        if (be != null) {
-                            if (be instanceof IElectricNode consumer) grid.registerConsumer(consumer);
-                            if (be instanceof IGeneratorNode generator) grid.registerGenerator(generator);
-                            if (be instanceof ICapacitorNode capacitor) grid.registerCapacitor(capacitor);
+                if (level.isLoaded(wirePos)) {
+                    for (Direction dir : Direction.values()) {
+                        BlockPos neighborPos = wirePos.relative(dir);
+
+                        if (level.isLoaded(neighborPos)) {
+                            BlockEntity be = level.getBlockEntity(neighborPos);
+                            if (be != null) {
+                                if (be instanceof IElectricNode consumer) grid.registerConsumer(consumer);
+                                if (be instanceof IGeneratorNode generator) grid.registerGenerator(generator);
+                                if (be instanceof ICapacitorNode capacitor) grid.registerCapacitor(capacitor);
+                            }
                         }
                     }
+                    grid.markWireAsScanned(wirePos);
                 }
             }
         }
@@ -89,6 +88,26 @@ public class ElectricGridRegistry {
 
     public static ElectricGridRegistry get(ServerLevel level) {
         return ElectricGridRegistryData.getRegistryFor(level);
+    }
+
+    public static void applyToConnectedGrid(Level level, BlockPos pos, Consumer<ElectricGrid> consumer) {
+        if (level instanceof ServerLevel serverLevel) {
+            Set<UUID> connectedGrids = new HashSet<>();
+            ElectricGridRegistry registry = ElectricGridRegistry.get(serverLevel);
+            for (Direction direction : Direction.values()) {
+                BlockPos neighborPos = pos.relative(direction);
+                UUID uuid = registry.getNetworkIdAt(neighborPos);
+                if (uuid != null) {
+                    connectedGrids.add(uuid);
+                }
+            }
+            for (UUID uuid : connectedGrids) {
+                ElectricGrid grid = registry.getGrid(uuid);
+                if (grid != null) {
+                    consumer.accept(grid);
+                }
+            }
+        }
     }
 
     public void registerPlacement(Level level, BlockPos pos) {

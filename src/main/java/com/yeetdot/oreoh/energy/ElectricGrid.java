@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ElectricGrid {
     private final Set<BlockPos> wirePositions;
-    
+    private final Set<BlockPos> scannedWirePositions = ConcurrentHashMap.newKeySet();
     private final Set<IElectricNode> connectedConsumers = ConcurrentHashMap.newKeySet();
     private final Set<IGeneratorNode> connectedGenerators = ConcurrentHashMap.newKeySet();
     private final Set<ICapacitorNode> connectedCapacitors = ConcurrentHashMap.newKeySet();
@@ -21,6 +21,14 @@ public final class ElectricGrid {
 
     public ElectricGrid(Set<BlockPos> wirePositions) {
         this.wirePositions = wirePositions;
+    }
+
+    public boolean hasScannedWire(BlockPos pos) {
+        return this.scannedWirePositions.contains(pos);
+    }
+
+    public void markWireAsScanned(BlockPos pos) {
+        this.scannedWirePositions.add(pos);
     }
     
     public void dispose() {
@@ -86,6 +94,7 @@ public final class ElectricGrid {
         connectedConsumers.clear();
         connectedGenerators.clear();
         connectedCapacitors.clear();
+        scannedWirePositions.clear();
     }
 
     public Set<BlockPos> getWirePositions() {

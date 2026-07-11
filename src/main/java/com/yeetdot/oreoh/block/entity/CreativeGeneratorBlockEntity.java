@@ -1,6 +1,7 @@
 package com.yeetdot.oreoh.block.entity;
 
 import com.yeetdot.oreoh.api.IGeneratorNode;
+import com.yeetdot.oreoh.data.ElectricGridRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -29,7 +30,17 @@ public class CreativeGeneratorBlockEntity extends BlockEntity implements IGenera
     public static void serverTick(Level level, BlockPos pos, BlockState state, CreativeGeneratorBlockEntity generatorBlockEntity) {
         generatorBlockEntity.tickSimulation(level);
     }
-    
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        ElectricGridRegistry.applyToConnectedGrid(getLevel(), pos, electricGrid -> electricGrid.unregisterGenerator(this));
+        super.preRemoveSideEffects(pos, state);
+    }
+
+    public void onPlace(Level level, BlockPos pos) {
+        ElectricGridRegistry.applyToConnectedGrid(level, pos, electricGrid -> electricGrid.registerGenerator(this));
+    }
+
     public void tickSimulation(Level level) {
         
     }

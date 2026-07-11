@@ -37,6 +37,14 @@ public class CreativeGeneratorBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (level.getBlockEntity(pos) instanceof CreativeGeneratorBlockEntity generator) {
+            generator.onPlace(level, pos);
+        }
+    }
+
+    @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
         return level.isClientSide() 
                 ? null 

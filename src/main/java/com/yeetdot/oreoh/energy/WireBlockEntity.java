@@ -44,7 +44,7 @@ public class WireBlockEntity extends BlockEntity {
         applyHeating(grid);
         cool();
         checkFailure(level);
-//        OreOh.LOGGER.info("Grid voltage: {}", grid.getVoltage());
+        OreOh.LOGGER.info("Grid voltage: {}", grid.getVoltage());
     }
     
     private void cool() {
