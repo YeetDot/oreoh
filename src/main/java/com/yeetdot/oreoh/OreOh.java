@@ -3,7 +3,7 @@ package com.yeetdot.oreoh;
 import com.yeetdot.oreoh.block.ModBlocks;
 import com.yeetdot.oreoh.block.entity.ModBlockEntities;
 import com.yeetdot.oreoh.creativetab.ModCreativeModeTabs;
-import com.yeetdot.oreoh.energy.ElectricGrid;
+import com.yeetdot.oreoh.data.ElectricGridRegistry;
 import com.yeetdot.oreoh.item.ModItems;
 import com.yeetdot.oreoh.menu.ModMenuTypes;
 import com.yeetdot.oreoh.recipe.ModRecipes;
@@ -12,6 +12,7 @@ import com.yeetdot.oreoh.world.gen.ModWorldGeneration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,42 +32,12 @@ public class OreOh implements ModInitializer {
 		ModMenuTypes.registerMenus();
 		ModRecipes.registerRecipes();
 
-//		EnergyStorage.SIDED.registerForBlockEntities((blockEntity, direction) -> {
-//			if (blockEntity instanceof AbstractEnergyContainerBlockEntity entity && direction != null) {
-//				EnergyStorage storage = entity.getEnergyStorage();
-//				return new EnergyStorage() {
-//					@Override
-//					public long insert(long maxAmount, TransactionContext transaction) {
-//						if (!entity.canInsertEnergy(direction)) return 0;
-//						return storage.insert(maxAmount, transaction);
-//					}
-//
-//					@Override
-//					public long extract(long maxAmount, TransactionContext transaction) {
-//						if (!entity.canExtractEnergy(direction)) return 0;
-//						return storage.extract(maxAmount, transaction);
-//					}
-//
-//					@Override
-//					public long getAmount() {
-//						return storage.getAmount();
-//					}
-//
-//					@Override
-//					public long getCapacity() {
-//						return storage.getCapacity();
-//					}
-//				};
-//			}
-//			return null;
-//			}
-//		);
-
-//		ServerTickEvents.END_LEVEL_TICK.register(EnergyTransferManager::flush);
-		
-		ServerTickEvents.END_SERVER_TICK.register(_ -> ElectricGrid.tickAllGrids());
-//
-//		PayloadTypeRegistry.clientboundPlay().register(EnergySyncPayload.TYPE, EnergySyncPayload.CODEC);
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			for (ServerLevel level : server.getAllLevels()) {
+				ElectricGridRegistry registry = ElectricGridRegistry.get(level);
+				registry.tickAllGrids(level);
+			}
+		});
 	}
 
 	public static Identifier id(String path) {

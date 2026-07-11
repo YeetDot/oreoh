@@ -3,16 +3,15 @@ package com.yeetdot.oreoh.energy;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yeetdot.oreoh.block.entity.ModBlockEntities;
+import com.yeetdot.oreoh.data.ElectricGridRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class WireBlock extends BaseEntityBlock {
@@ -46,22 +45,11 @@ public class WireBlock extends BaseEntityBlock {
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         
-        if (!level.isClientSide()) {
+        if (level instanceof ServerLevel serverLevel) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof WireBlockEntity wireBlockEntity) {
-                WireNetworkHelper.onWirePlaced(level, pos, wireBlockEntity);
+                ElectricGridRegistry.get(serverLevel).registerPlacement(serverLevel, pos);
                 wireBlockEntity.setAmbientTemperature(level);
-            }
-        }
-    }
-
-    @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
-        if (!level.isClientSide()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof WireBlockEntity wireBlockEntity) {
-                WireNetworkHelper.onNeighborUpdate(level, pos, wireBlockEntity);
             }
         }
     }
@@ -69,7 +57,7 @@ public class WireBlock extends BaseEntityBlock {
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
         return level instanceof ServerLevel serverLevel 
-                ? createTickerHelper(type, ModBlockEntities.WIRE_BLOCK_ENTITY, ((_, _, _, entity) -> WireBlockEntity.serverTick(serverLevel, entity)))
+                ? createTickerHelper(type, ModBlockEntities.WIRE_BLOCK_ENTITY, ((_, pos, _, entity) -> WireBlockEntity.serverTick(serverLevel, pos, entity)))
                 : null;
     }
 }

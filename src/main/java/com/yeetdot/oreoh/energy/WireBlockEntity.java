@@ -2,6 +2,7 @@ package com.yeetdot.oreoh.energy;
 
 import com.yeetdot.oreoh.OreOh;
 import com.yeetdot.oreoh.block.entity.ModBlockEntities;
+import com.yeetdot.oreoh.data.ElectricGridRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -14,10 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
 
 public class WireBlockEntity extends BlockEntity {
-    private @Nullable ElectricGrid grid;
     private double temperature = 20.0;
     private double ambientTemperature = 20.0; 
     
@@ -31,19 +30,21 @@ public class WireBlockEntity extends BlockEntity {
         this.thermal = thermal;
     }
     
-    public static void serverTick(ServerLevel level, WireBlockEntity wire) {
-        wire.tickSimulation(level);
+    public static void serverTick(ServerLevel level, BlockPos pos, WireBlockEntity wire) {
+        wire.tickSimulation(level, pos);
     }
     
-    public void tickSimulation(ServerLevel level) {
-        if (this.grid == null) {
+    public void tickSimulation(ServerLevel level, BlockPos pos) {
+        ElectricGrid grid = ElectricGridRegistry.get(level).getGrid(pos);
+
+        if (grid == null) {
             cool();
             return;
         }
-        applyHeating(this.grid);
+        applyHeating(grid);
         cool();
         checkFailure(level);
-        OreOh.LOGGER.info(String.valueOf(this.grid == null));
+//        OreOh.LOGGER.info("Grid voltage: {}", grid.getVoltage());
     }
     
     private void cool() {
@@ -67,23 +68,8 @@ public class WireBlockEntity extends BlockEntity {
         double heatGain = powerLoss / thermal.thermalMass();
         
         this.temperature += heatGain;
-    }
 
-    public @Nullable ElectricGrid getGrid() {
-        return grid;
-    }
-    
-    public void setGrid(@Nullable ElectricGrid newGrid) {
-        ElectricGrid oldGrid = this.grid;
-        if (oldGrid != null && oldGrid != newGrid) {
-            oldGrid.decrementWireCount();
-        }
-
-        this.grid = newGrid;
-
-        if (newGrid != null && oldGrid != newGrid) {
-            newGrid.incrementWireCount();
-        }
+//        OreOh.LOGGER.info("Power loss: {}, Heat gain: {}", powerLoss, heatGain);
     }
 
     @Override
@@ -101,25 +87,33 @@ public class WireBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
-        
-        ElectricGrid currentGrid = this.grid;
-        if (currentGrid != null) {
-            tag.putDouble("grid_voltage", currentGrid.getVoltage());
-            tag.putDouble("grid_pf", currentGrid.getCurrentPowerFactor());
+        ElectricGridRegistry registry = this.getLevel() instanceof ServerLevel serverLevel ? ElectricGridRegistry.get(serverLevel) : null;
+        ElectricGrid grid = null;
+        if (registry != null) {
+            grid = registry.getGrid(getBlockPos());
+        }
+        if (grid != null) {
+            tag.putDouble("grid_voltage", grid.getVoltage());
+            tag.putDouble("grid_pf", grid.getCurrentPowerFactor());
         }
         
         return tag;
     }
 
     @Override
-    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-        ElectricGrid currentGrid = this.getGrid();
-        if (currentGrid != null) {
-            currentGrid.decrementWireCount();
+    public void setLevel(Level level) {
+        super.setLevel(level);
+
+        if (!level.isClientSide()) {
+            setAmbientTemperature(level);
         }
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (this.getLevel() instanceof ServerLevel serverLevel) {
-            WireNetworkHelper.onWireRemoved(serverLevel, pos, this);
+            ElectricGridRegistry.get(serverLevel).registerRemoval(serverLevel, pos);
         }
     }
 
